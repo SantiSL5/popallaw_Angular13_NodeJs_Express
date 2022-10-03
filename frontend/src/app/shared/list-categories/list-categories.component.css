@@ -1,0 +1,37 @@
+.list {
+  text-align: left;
+  margin: 10px;
+}
+
+a {
+  padding-right: 15px;
+  float: right;
+  text-decoration: none;
+}
+
+.details {
+  color: green;
+}
+
+.update {
+  color: blue;
+}
+
+.delete {
+  color: red;
+}
+
+.detailsCat {
+  width: 100px;
+  float: right;
+  /* border-radius: 20px;
+  border: 1px black solid; */
+}
+
+.margin {
+  margin-left: 45px;
+}
+
+span {
+  font-size: 150%;
+}

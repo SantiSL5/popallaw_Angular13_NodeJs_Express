@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  popallawBackend:
+    container_name: popallawBackend
+    image: node:16.17.0
+    tty: true
+    working_dir: /home/node/app
+    ports:
+      - $BACKEND_LOCAL_PORT:$BACKEND_DOCKER_PORT
+    volumes:
+      - ./backend:/home/node/app
+    networks:
+      - popallawNetwork
+    depends_on: 
+      - popallawMongodb
+    command: /bin/bash -c "usermod -u `stat -c '%u' .` node && groupmod -g `stat -c '%g' .` node && su node -c 'npm install && npm run dev'"
+  popallawFrontend:
+    container_name: popallawFrontend
+    image: node:16.17.0
+    tty: true
+    working_dir: /home/node/app
+    ports:
+      - $FRONTEND_LOCAL_PORT:$FRONTEND_DOCKER_PORT
+    volumes:
+      - ./frontend:/home/node/app
+    networks:
+      - popallawNetwork
+    command: /bin/bash -c "usermod -u `stat -c '%u' .` node && groupmod -g `stat -c '%g' .` node && su node -c 'npm install && npm start'"
+  popallawMongodb:
+    container_name: popallawMongodb
+    image: mongo:6.0.1
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USER
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
+    volumes:
+      - ./backend/data:/data/db
+    networks:
+      - popallawNetwork
+networks:
+  popallawNetwork:
