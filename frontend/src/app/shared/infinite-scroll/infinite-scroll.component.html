@@ -1,0 +1,19 @@
+<div class="container page-wrapper" infinite-scroll (scrolled)="onScrollDown()">
+    <div class="page-inner">
+        <div class="row">
+            <div class="el-wrapper">
+                <div class="card" *ngFor="let category of listCategories" [routerLink]="['/shop']"
+                    [queryParams]="{category: category.slug}">
+                    <div class="box-up">
+                        <img class="img" src="../../../assets/img/{{category.photo}}" alt="">
+                        <div class="img-info">
+                            <div class="info-inner">
+                                <span class="p-name">{{category.name}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

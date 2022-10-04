@@ -15,14 +15,25 @@ export class CategoryService {
     private apiService: ApiService
   ) { }
 
-  query(): Observable<Category[]> {
-    const params = {};
+  query(offset: number = 0, limit: number = 0): Observable<Category[]> {
+    let params = new HttpParams()
+      .set('offset', offset)
+      .set('limit', limit);
 
     return this.apiService.get(
-      '/category',
-      new HttpParams({ fromObject: params })
+      '/category/',
+      params
     );
   }
+
+  // query(): Observable<Category[]> {
+  //   const params = {};
+
+  //   return this.apiService.get(
+  //     '/category',
+  //     new HttpParams({ fromObject: params })
+  //   );
+  // }
 
   get(slug: string): Observable<Category> {
     return this.apiService.get('/category/' + slug);
