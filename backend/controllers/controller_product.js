@@ -65,7 +65,7 @@ exports.deleteProduct = async (req, res) => {
             res.status(404).send(FormatError("Product not found", res.statusCode));
         } else {
             await Product.findOneAndRemove({ "slug": req.params.slug });
-            res.json(FormatSuccess("Product " + '"' + product.name + '"' + " deleted successfuly"));
+            res.json(FormatSuccess("Product " + "'" + product.name + "'" + " deleted successfuly"));
         }
     } catch (error) {
         console.log(error);

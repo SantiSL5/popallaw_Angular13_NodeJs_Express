@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Category = require("../models/category");
 const uniqueValitador = require('mongoose-unique-validator');
 const slugf = require('slug');
 
@@ -12,11 +13,38 @@ const ProductSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    descrition: {
+        type: String,
+        required: true
+    },
+    status: {
+        type: String,
+        required: true
+    },
+    photo: {
+        type: String,
+        required: true
+    },
+    category: {
+        type: String,
+        required: true
+    },
     price: {
         type: Number,
         required: true
     }
-}, { versionKey: false });
+}, {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+    versionKey: false
+});
+
+ProductSchema.virtual('categoryname', {
+    ref: 'Category',
+    localField: 'category',
+    foreignField: 'slug',
+    justOne: true
+})
 
 ProductSchema.plugin(uniqueValitador, { message: "is already taken" });
 
@@ -35,6 +63,11 @@ ProductSchema.methods.toJSONfor = function () {
     return {
         slug: this.slug,
         name: this.name,
+        descrition: this.price,
+        status: this.status,
+        photo: this.photo,
+        category: this.category,
+        categoryname: this.categoryname,
         price: this.price
     }
 }
