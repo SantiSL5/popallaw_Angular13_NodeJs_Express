@@ -4,6 +4,7 @@ const slugf = require('slug');
 const FormatSuccess = require('../utils/responseApi.js').FormatSuccess;
 const FormatError = require('../utils/responseApi.js').FormatError;
 const FormatObject = require('../utils/responseApi.js').FormatObject;
+const category = require("../models/category");
 
 exports.createProduct = async (req, res) => {
     try {
@@ -18,7 +19,8 @@ exports.createProduct = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
     try {
-        const products = await Product.find();
+        const products = await Product.find().populate('categoryname');
+        // const products = await Product.find();
         res.json(FormatObject(products));
     } catch (error) {
         console.log(error);
@@ -28,7 +30,7 @@ exports.getProducts = async (req, res) => {
 
 exports.getProduct = async (req, res) => {
     try {
-        const product = await Product.findOne({ "slug": req.params.slug });
+        const product = await Product.findOne({ "slug": req.params.slug }).populate('categoryname');;
         res.json(FormatObject(product));
     } catch (error) {
         console.log(error);
@@ -45,7 +47,8 @@ exports.updateProduct = async (req, res) => {
         const product = await Product.findOne({ "slug": req.params.slug });
 
         if (!product) {
-            res.status(404).send(FormatError("Product not found", res.statusCode));        } else {
+            res.status(404).send(FormatError("Product not found", res.statusCode));
+        } else {
             req.body.slug = slugeo(req.body.name);
 
             const newProduct = await Product.findOneAndUpdate({ "slug": req.params.slug }, req.body, { new: true });
