@@ -20,6 +20,7 @@
     "@angular/router": "~13.0.0",
     "ngx-toastr": "^14.3.0",
     "ngx-infinite-scroll": "^10.0.1",
+    "mdb-angular-ui-kit": "^2.0.0",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

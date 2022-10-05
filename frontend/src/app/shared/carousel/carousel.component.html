@@ -1,0 +1,22 @@
+<mdb-carousel [interval]=3000 [controls]="true" [indicators]="true" class="carousel slide carousel-fade" [animation]="'fade'" #carousel>
+  <mdb-carousel-item class="caraousel-item" [routerLink]="['/shop']" [queryParams]="{category: listCategories[0].slug}">
+    <img
+      src="../../../assets/img/{{listCategories[0].photo}}"
+      class="d-block w-100"
+      alt="..."
+    />
+    <div class="carousel-caption d-none d-md-block">
+      <span>{{listCategories[0].name}}</span>
+    </div>
+  </mdb-carousel-item>
+  <mdb-carousel-item *ngFor="let category of listCategories |  slice:1:listCategories.length-1" [routerLink]="['/shop']" [queryParams]="{category: category.slug}">
+    <img
+      src="../../../assets/img/{{category.photo}}"
+      class="d-block w-100"
+      alt="..."
+    />
+    <div class="carousel-caption d-none d-md-block">
+      <span>{{category.name}}</span>
+    </div>
+  </mdb-carousel-item>
+</mdb-carousel>

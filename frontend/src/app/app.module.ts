@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,6 +31,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
       closeButton: true,
       progressBar: true,
     }),
+    MdbCarouselModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -8,6 +8,8 @@ import { ListProductsComponent } from './list-products/list-products.component';
 import { HeaderComponent } from './header/header.component';
 import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
+import { CarouselComponent } from './carousel/carousel.component';
 
 
 @NgModule({
@@ -15,19 +17,22 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     ListCategoriesComponent,
     ListProductsComponent,
     HeaderComponent,
-    InfiniteScrollComponent
+    InfiniteScrollComponent,
+    CarouselComponent
   ],
   imports: [
     CommonModule,
     HttpClientModule,
     RouterModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    MdbCarouselModule
   ],
   exports: [
     ListCategoriesComponent,
     ListProductsComponent,
     HeaderComponent,
-    InfiniteScrollComponent
+    InfiniteScrollComponent,
+    CarouselComponent
   ]
 })
 export class SharedModule { }
