@@ -18,7 +18,9 @@ exports.createCategory = async (req, res) => {
 
 exports.getCategories = async (req, res) => {
     try {
-        const categories = await Category.find().limit(req.query.limit).skip(req.query.offset);
+        limit=Number(req.query.limit);
+        offset=Number(req.query.offset);
+        const categories = await Category.find().limit(limit).skip(offset);
         res.json(FormatObject(categories));
     } catch (error) {
         console.log(error);
