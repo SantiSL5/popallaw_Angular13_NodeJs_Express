@@ -1,24 +1,34 @@
-<div class="list row">
-    <div class="col-md-6">
-        <h4>Products List</h4>
-        <ul class="list-group">
-            <li class="list-group-item" *ngFor="let product of listProducts">
-                {{ product.name }}
-                <a class="delete" (click)="deleteProduct(product.slug)">Delete</a>
-                <a class="update" (click)="updateProduct(product.slug)">Update</a>
-                <a class="details" (click)="showDetails(product.slug)">Details</a>
-            </li>
-        </ul>
+<div class="main">
+  <div class="container page-wrapper">
+    <div class="page-inner">
+      <div class="row">
+        <h1 [hidden]="isProducts">No se han encontrado resultados</h1>
+        <div [hidden]="!isProducts" class="el-wrapper">
+          <div class="card" *ngFor="let product of listProducts" (click)="showDetails(product.slug)">
+            <div class="box-up">
+              <img class="img" src="../../../assets/img/{{product.photo}}" alt="">
+              <div class="img-info">
+                <div class="info-inner">
+                  <span class="p-name">{{product.name}}</span>
+                  <span class="p-category">{{product.categoryname.name}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="box-down">
+              <div class="h-bg">
+                <div class="h-bg-inner"></div>
+              </div>
+
+              <a class="cart" href="#">
+                <span class="price">{{product.price}}€</span>
+                <span class="add-to-cart">
+                  <span class="txt">Buy</span>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div *ngIf="viewDetails === 'show'" class="detailsProd col-6 list-group">
-        <h4 class="margin">Details</h4>
-        <ul>
-            <li class="list-group-item">
-                <span>Name: {{detailedProduct.name}}</span>
-            </li>
-            <li class="list-group-item">
-                <span>Price: {{detailedProduct.price}}</span>
-            </li>
-        </ul>
-    </div>
+  </div>
 </div>

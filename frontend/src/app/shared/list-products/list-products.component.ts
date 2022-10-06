@@ -14,6 +14,7 @@ export class ListProductsComponent implements OnInit {
   listProducts: Product[] = [];
   viewDetails: String = "hidden";
   detailedProduct!: Product;
+  isProducts: Boolean = true;
 
   constructor(
     private _productService: ProductService,
@@ -30,22 +31,13 @@ export class ListProductsComponent implements OnInit {
 
   getAllProducts(): void {
     this._productService.query().subscribe(data => {
-      this.listProducts = data;
+      if (data.length == 0) {
+        this.isProducts=false;
+      }else {
+        this.isProducts=true;
+        this.listProducts= data;
+      }
     });
-  }
-
-  deleteProduct(slug: string): void {
-    this._productService.destroy(slug).subscribe({
-      next: (res) => {
-        this.toastrService.success('Product deleted', 'Product deleted');
-        this.refreshList();
-      },
-      error: (e) => console.error(e)
-    });
-  }
-
-  updateProduct(slug: string): void {
-    this.upProduct.emit(slug);
   }
 
   showDetails(slug: string): void {
