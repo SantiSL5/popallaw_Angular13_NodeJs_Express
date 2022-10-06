@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
 
 @Component({
   selector: 'app-shop',
@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShopComponent implements OnInit {
 
+  view: String = "list";
+  slug: string = "";
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  showDetails(slug: string) {
+    this.slug = slug;
+    this.view = "details";
   }
 
 }

@@ -10,9 +10,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ListProductsComponent implements OnInit {
 
-  @Output() upProduct = new EventEmitter<string>();
+  @Output() shDetails = new EventEmitter<string>();
   listProducts: Product[] = [];
-  viewDetails: String = "hidden";
   detailedProduct!: Product;
   isProducts: Boolean = true;
 
@@ -32,19 +31,17 @@ export class ListProductsComponent implements OnInit {
   getAllProducts(): void {
     this._productService.query().subscribe(data => {
       if (data.length == 0) {
-        this.isProducts=false;
-      }else {
-        this.isProducts=true;
-        this.listProducts= data;
+        this.isProducts = false;
+      } else {
+        this.isProducts = true;
+        this.listProducts = data;
       }
     });
   }
 
-  showDetails(slug: string): void {
-    this._productService.get(slug).subscribe(data => {
-      this.detailedProduct = data;
-      this.viewDetails = "show";
-    });
+  showDetails(value: string) {
+    this.shDetails.emit(value);
   }
+
 
 }
