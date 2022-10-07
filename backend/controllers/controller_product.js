@@ -20,8 +20,8 @@ exports.createProduct = async (req, res) => {
 exports.getProducts = async (req, res) => {
     try {
         const products = await Product.find().populate('categoryname');
-        // const products = await Product.find();
-        res.json(FormatObject(products));
+        const numproducts = await Product.find().populate('categoryname').count();
+        res.json(FormatObject({numproducts,products}));
     } catch (error) {
         console.log(error);
         res.status(500).send(FormatError("Error occurred", res.statusCode));

@@ -30,11 +30,11 @@ export class ListProductsComponent implements OnInit {
 
   getAllProducts(): void {
     this._productService.query().subscribe(data => {
-      if (data.length == 0) {
+      if (data.numproducts == 0) {
         this.isProducts = false;
       } else {
         this.isProducts = true;
-        this.listProducts = data;
+        this.listProducts = data.products;
       }
     });
   }

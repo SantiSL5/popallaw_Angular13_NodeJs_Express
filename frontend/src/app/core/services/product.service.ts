@@ -15,7 +15,7 @@ export class ProductService {
     private apiService: ApiService
   ) { }
 
-  query(): Observable<Product[]> {
+  query(): Observable<any> {
     const params = {};
 
     return this.apiService.get(
