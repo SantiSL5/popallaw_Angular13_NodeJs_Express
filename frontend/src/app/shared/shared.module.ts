@@ -7,9 +7,11 @@ import { ListProductsComponent } from './list-products/list-products.component';
 import { HeaderComponent } from './header/header.component';
 import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { CarouselComponent } from './carousel/carousel.component';
 import { DetailsProductComponent } from './details-product/details-product.component';
+import { PaginationComponent } from './pagination/pagination.component';
 
 
 @NgModule({
@@ -18,21 +20,24 @@ import { DetailsProductComponent } from './details-product/details-product.compo
     HeaderComponent,
     InfiniteScrollComponent,
     CarouselComponent,
-    DetailsProductComponent
+    DetailsProductComponent,
+    PaginationComponent
   ],
   imports: [
     CommonModule,
     HttpClientModule,
     RouterModule,
     InfiniteScrollModule,
-    MdbCarouselModule
+    MdbCarouselModule,
+    NgxPaginationModule
   ],
   exports: [
     ListProductsComponent,
     HeaderComponent,
     InfiniteScrollComponent,
     CarouselComponent,
-    DetailsProductComponent
+    DetailsProductComponent,
+    PaginationComponent
   ]
 })
 export class SharedModule { }

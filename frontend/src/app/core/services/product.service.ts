@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApiService } from './api.service';
 import { Product } from '../models/product';
+import { Filters } from '../models/filters';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -15,8 +16,9 @@ export class ProductService {
     private apiService: ApiService
   ) { }
 
-  query(): Observable<any> {
-    const params = {};
+  query(filters: Filters): Observable<any> {
+    let params = {};
+    params = filters;
 
     return this.apiService.get(
       '/product',

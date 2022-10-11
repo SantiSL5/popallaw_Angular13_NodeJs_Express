@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Product } from 'src/app/core/models/product';
+import { Filters } from 'src/app/core/models/filters';
 import { ProductService } from 'src/app/core/services/product.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -8,12 +9,17 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './list-products.component.html',
   styleUrls: ['./list-products.component.css']
 })
+
 export class ListProductsComponent implements OnInit {
 
   @Output() shDetails = new EventEmitter<string>();
   listProducts: Product[] = [];
   detailedProduct!: Product;
   isProducts: Boolean = true;
+  defaultFilters: Filters = {
+    limit: 6,
+    offset: 0
+  };
 
   constructor(
     private _productService: ProductService,
@@ -21,15 +27,11 @@ export class ListProductsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getAllProducts();
+    this.getAllProducts(this.defaultFilters);
   }
 
-  refreshList(): void {
-    this.getAllProducts();
-  }
-
-  getAllProducts(): void {
-    this._productService.query().subscribe(data => {
+  getAllProducts(filters: Filters): void {
+    this._productService.query(filters).subscribe(data => {
       if (data.numproducts == 0) {
         this.isProducts = false;
       } else {
@@ -43,5 +45,8 @@ export class ListProductsComponent implements OnInit {
     this.shDetails.emit(value);
   }
 
+  loadPage(filters: Filters) {
+    this.getAllProducts(filters);
+  }
 
 }

@@ -19,7 +19,10 @@ exports.createProduct = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
     try {
-        const products = await Product.find().populate('categoryname');
+        console.log(req.query);
+        limit=Number(req.query.limit);
+        offset=Number(req.query.offset);
+        const products = await Product.find().populate('categoryname').limit(limit).skip(offset);
         const numproducts = await Product.find().populate('categoryname').count();
         res.json(FormatObject({numproducts,products}));
     } catch (error) {

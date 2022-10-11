@@ -1,0 +1,9 @@
+<div class="divpagination">
+    <div class="pagination">
+      <ul>
+        <button (click)="setPageTo(actualpage - 1)" class="pagbutton" [hidden]="onMostLeft"><li><</li></button>
+        <button *ngFor="let page of pages" [class.active]="page == actualpage" (click)="setPageTo(page)"><li>{{page}}</li></button>
+        <button (click)="setPageTo(actualpage + 1)" class="pagbutton" [hidden]="onMostRight">></button>
+      </ul>
+    </div>
+</div>
