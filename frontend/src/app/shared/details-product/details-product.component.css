@@ -1,7 +1,7 @@
-body {
-    background-color: #fdf1ec;
+div {
+    background-color: #ffffff
 }
-  
+
 .wrapper {
     display: flex;
     height: 420px;

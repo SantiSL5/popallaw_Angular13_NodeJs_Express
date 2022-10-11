@@ -1,2 +1,4 @@
-<app-list-products *ngIf="view === 'list'" (shDetails)="showDetails($event)"></app-list-products>
-<app-details-product *ngIf="view === 'details'" [slug]="slug"></app-details-product>
+<main>
+    <app-list-products *ngIf="view === 'list'" (shDetails)="showDetails($event)"></app-list-products>
+    <app-details-product *ngIf="view === 'details'" [slug]="slug"></app-details-product>
+</main>

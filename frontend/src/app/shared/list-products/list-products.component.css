@@ -3,6 +3,10 @@ html {
   height: 100%;
 }
 
+.main, .container, .page-inner, .el-wrapper, .row {
+  background-color:rgba(0, 0, 0, 0);
+}
+
 .d-flex {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -25,10 +29,6 @@ html {
   align-items: center;
 }
 
-body {
-  background-color: #f7f7f7;
-}
-
 .page-wrapper {
   height: 100%;
 }
@@ -48,7 +48,6 @@ body {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  background-color: #fff;
 }
 
 .card {
