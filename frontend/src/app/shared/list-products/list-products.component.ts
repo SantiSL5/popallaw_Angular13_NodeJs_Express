@@ -56,7 +56,6 @@ export class ListProductsComponent implements OnInit {
         this.isProducts = true;
         this.listProducts = data.products;
         this.productCount = data.numproducts;
-        console.log(this.productCount);
         this.pagComponent.setNumPages(this.productCount)
       }
     });

@@ -1,6 +1,8 @@
 <div>
-    <select name="category">
-        <option (click)="categorySet(undefined)">Category</option>
-        <option *ngFor="let category of listCategories" (click)="categorySet(category.slug)">{{category.name}}</option>
+    <label for="category">Category:</label>
+    <select name="category" [(ngModel)]="selectedValue" (change)="categorySet(selectedValue)">
+        <option [ngValue]="undefined" selected>Reset</option>
+        <option *ngFor="let category of listCategories" [ngValue]="category.slug">
+            {{category.name}}</option>
     </select>
 </div>

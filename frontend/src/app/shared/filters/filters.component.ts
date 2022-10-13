@@ -11,11 +11,15 @@ import { CategoryService } from 'src/app/core/services/category.service';
 export class FiltersComponent implements OnInit {
   @Output() filtersChange = new EventEmitter<Filters>();
   listCategories: Category[] = [];
+  // selectedValue!: Event;
+  selectedValue: string = '';
   filters: Filters = {
-    category : undefined
+    category: undefined
   };
 
-  constructor(private _categoryService: CategoryService) {}
+  constructor(private _categoryService: CategoryService) {
+    // this.selectedValue = 'undefined';
+  }
 
   ngOnInit(): void {
     this.getAllCategories();
@@ -27,8 +31,10 @@ export class FiltersComponent implements OnInit {
     });
   }
 
+
+
   categorySet(category: string | undefined) {
-    this.filters.category=category;
+    this.filters.category = category;
     this.filtersChange.emit(this.filters);
   }
 
