@@ -33,4 +33,4 @@
     </div>
   </div>
 </div>
-<app-pagination (pageChange)="loadPage($event)"></app-pagination>
+<app-pagination [hidden]="!isProducts" (pageChange)="loadPage($event)"></app-pagination>

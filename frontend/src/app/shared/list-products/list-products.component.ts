@@ -49,14 +49,14 @@ export class ListProductsComponent implements OnInit {
       this.filters.limit=newFilters.limit;
       this.filters.offset=newFilters.offset;
     }
-    console.log(this.filters);
-    this._productService.query(newFilters).subscribe(data => {
+    this._productService.query(this.filters).subscribe(data => {
       if (data.numproducts == 0) {
         this.isProducts = false;
       } else {
         this.isProducts = true;
         this.listProducts = data.products;
         this.productCount = data.numproducts;
+        console.log(this.productCount);
         this.pagComponent.setNumPages(this.productCount)
       }
     });

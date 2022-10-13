@@ -28,9 +28,11 @@ export class PaginationComponent {
 
   setNumPages(count: number): void {
     this.numpages = Math.ceil(count / 6);
+    this.pages=[];
     for (let i = 0; i < this.numpages; i++) {
       this.pages[i] = i + 1;
     }
+    this.checkMove();
   }
 
   setPageTo(pageNumber: number) {
@@ -39,6 +41,15 @@ export class PaginationComponent {
     this.filters.limit = 6;
     this.filters.offset = this.filters.limit * (this.actualpage - 1);
 
+    this.checkMove();
+
+    this.pageChange.emit(this.filters);
+
+    // this.location.replaceState('/shop/' + btoa(JSON.stringify(this.filters)));
+    // this.getListFiltered(this.filters);
+  }
+
+  checkMove() {
     this.onMostLeft = false;
     this.onMostRight = false;
 
@@ -49,11 +60,6 @@ export class PaginationComponent {
     if (this.actualpage == this.pages.length) {
       this.onMostRight = true;
     }
-
-    this.pageChange.emit(this.filters);
-
-    // this.location.replaceState('/shop/' + btoa(JSON.stringify(this.filters)));
-    // this.getListFiltered(this.filters);
   }
 
 }

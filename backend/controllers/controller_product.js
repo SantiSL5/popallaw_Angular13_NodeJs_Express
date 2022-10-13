@@ -19,11 +19,12 @@ exports.createProduct = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
     try {
-        console.log(req.query);
+        queryfind={};
+        if (req.query.category != 'undefined' && req.query.category != undefined) queryfind.category=req.query.category;
         limit=Number(req.query.limit);
         offset=Number(req.query.offset);
-        const products = await Product.find().populate('categoryname').limit(limit).skip(offset);
-        const numproducts = await Product.find().populate('categoryname').count();
+        const products = await Product.find(queryfind).populate('categoryname').limit(limit).skip(offset);
+        const numproducts = await Product.find(queryfind).populate('categoryname').count();
         res.json(FormatObject({numproducts,products}));
     } catch (error) {
         console.log(error);
