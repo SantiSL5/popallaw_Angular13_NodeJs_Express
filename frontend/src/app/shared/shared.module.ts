@@ -12,6 +12,7 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { DetailsProductComponent } from './details-product/details-product.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { FiltersComponent } from './filters/filters.component';
+import { SearchComponent } from './search/search.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { FiltersComponent } from './filters/filters.component';
     CarouselComponent,
     DetailsProductComponent,
     PaginationComponent,
-    FiltersComponent
+    FiltersComponent,
+    SearchComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +40,8 @@ import { FiltersComponent } from './filters/filters.component';
     CarouselComponent,
     DetailsProductComponent,
     PaginationComponent,
-    FiltersComponent
+    FiltersComponent,
+    SearchComponent
   ]
 })
 export class SharedModule { }

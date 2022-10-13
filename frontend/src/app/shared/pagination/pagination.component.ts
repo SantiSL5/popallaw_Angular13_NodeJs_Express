@@ -20,10 +20,7 @@ export class PaginationComponent {
   filters = new Filters();
   onMostLeft: Boolean = true;
   onMostRight: Boolean = false;
-  defaultFilters: Filters = {
-    limit: 6,
-    offset: 0
-  };
+
   @Output() pageChange = new EventEmitter<Filters>();
 
   constructor(
