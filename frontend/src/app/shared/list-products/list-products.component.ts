@@ -33,16 +33,22 @@ export class ListProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.filters=this.defaultFilters;
-    this.getAllProducts(this.filters);
+    this.getAllProducts(this.filters, "start");
   }
 
-  getAllProducts(newFilters: Filters): void {
-    if (newFilters.category) this.filters.category=newFilters.category ;
-    if (newFilters.limit) this.filters.limit=newFilters.limit;
-    if (newFilters.name) this.filters.name=newFilters.name;
-    if (newFilters.offset) this.filters.offset=newFilters.offset;
-    if (newFilters.priceMax) this.filters.priceMax=newFilters.priceMax;
-    if (newFilters.priceMin) this.filters.priceMin=newFilters.priceMin;
+  getAllProducts(newFilters: Filters, call: string): void {
+    if (call=="filters") {
+      this.filters.limit=this.defaultFilters.limit;
+      this.filters.offset=this.defaultFilters.offset;
+      this.filters.category=newFilters.category;
+      this.filters.name=newFilters.name;
+      this.filters.priceMax=newFilters.priceMax;
+      this.filters.priceMin=newFilters.priceMin;
+    }
+    if (call=="pagination") {
+      this.filters.limit=newFilters.limit;
+      this.filters.offset=newFilters.offset;
+    }
     console.log(this.filters);
     this._productService.query(newFilters).subscribe(data => {
       if (data.numproducts == 0) {
@@ -61,11 +67,11 @@ export class ListProductsComponent implements OnInit {
   }
 
   loadPage(newFilters: Filters) {
-    this.getAllProducts(newFilters);
+    this.getAllProducts(newFilters, "pagination");
   }
 
   loadFilters(newFilters: Filters) {
-    this.getAllProducts(newFilters);
+    this.getAllProducts(newFilters, "filters");
   }
 
 }

@@ -28,11 +28,8 @@ export class FiltersComponent implements OnInit {
   }
 
   categorySet(category: string | undefined) {
-    if (category) {
-      console.log(this.filters);
-      this.filters.category=category;
-      this.filtersChange.emit(this.filters);
-    }
+    this.filters.category=category;
+    this.filtersChange.emit(this.filters);
   }
 
 }
