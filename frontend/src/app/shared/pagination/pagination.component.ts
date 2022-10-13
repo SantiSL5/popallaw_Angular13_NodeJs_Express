@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
 import { Product } from 'src/app/core/models/product';
 import { Filters } from 'src/app/core/models/filters';
 import { ProductService } from 'src/app/core/services/product.service';
@@ -9,9 +9,8 @@ import { ProductService } from 'src/app/core/services/product.service';
   styleUrls: ['./pagination.component.css']
 })
 
-export class PaginationComponent implements OnInit {
+export class PaginationComponent {
 
-  // totalProducts: number = 0;
   numpages: number = 0;
   pages: number[] = [];
   actualpage: number = 1;
@@ -28,20 +27,15 @@ export class PaginationComponent implements OnInit {
   @Output() filtersList = new EventEmitter<Filters>();
 
   constructor(
-    private _productService: ProductService,
   ) { }
 
-  ngOnInit(): void {
-    this.getProductsCount();
-  }
+  setNumPages(count: number): void {
+    console.log(count);
 
-  getProductsCount(): void {
-    this._productService.query(this.defaultFilters).subscribe(data => {
-      this.numpages = Math.ceil(data.numproducts / 6);
-      for (let i = 0; i < this.numpages; i++) {
-        this.pages[i] = i + 1;
-      }
-    });
+    this.numpages = Math.ceil(count / 6);
+    for (let i = 0; i < this.numpages; i++) {
+      this.pages[i] = i + 1;
+    }
   }
 
   setPageTo(pageNumber: number) {

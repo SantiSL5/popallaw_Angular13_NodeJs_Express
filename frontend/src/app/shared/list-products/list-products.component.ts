@@ -1,8 +1,9 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { Product } from 'src/app/core/models/product';
 import { Filters } from 'src/app/core/models/filters';
 import { ProductService } from 'src/app/core/services/product.service';
 import { ToastrService } from 'ngx-toastr';
+import { PaginationComponent } from '../pagination/pagination.component';
 
 @Component({
   selector: 'app-list-products',
@@ -11,10 +12,13 @@ import { ToastrService } from 'ngx-toastr';
 })
 
 export class ListProductsComponent implements OnInit {
+  @ViewChild(PaginationComponent) 
+  private pagComponent: PaginationComponent = new PaginationComponent;
 
   @Output() shDetails = new EventEmitter<string>();
   listProducts: Product[] = [];
   detailedProduct!: Product;
+  productCount!: number;
   isProducts: Boolean = true;
   defaultFilters: Filters = {
     limit: 6,
@@ -37,6 +41,8 @@ export class ListProductsComponent implements OnInit {
       } else {
         this.isProducts = true;
         this.listProducts = data.products;
+        this.productCount = data.numproducts;
+        this.pagComponent.setNumPages(this.productCount)
       }
     });
   }
