@@ -1,6 +1,6 @@
 <div>
     <select name="category">
-        <option (click)="categoryset(undefined)">Category</option>
-        <option *ngFor="let category of listCategories" (click)="categoryset(category.slug)">{{category.name}}</option>
+        <option (click)="categorySet(undefined)">Category</option>
+        <option *ngFor="let category of listCategories" (click)="categorySet(category.slug)">{{category.name}}</option>
     </select>
 </div>

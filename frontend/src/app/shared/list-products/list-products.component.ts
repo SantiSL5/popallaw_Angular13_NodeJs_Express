@@ -32,11 +32,19 @@ export class ListProductsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getAllProducts(this.defaultFilters);
+    this.filters=this.defaultFilters;
+    this.getAllProducts(this.filters);
   }
 
-  getAllProducts(filters: Filters): void {
-    this._productService.query(filters).subscribe(data => {
+  getAllProducts(newFilters: Filters): void {
+    if (newFilters.category) this.filters.category=newFilters.category ;
+    if (newFilters.limit) this.filters.limit=newFilters.limit;
+    if (newFilters.name) this.filters.name=newFilters.name;
+    if (newFilters.offset) this.filters.offset=newFilters.offset;
+    if (newFilters.priceMax) this.filters.priceMax=newFilters.priceMax;
+    if (newFilters.priceMin) this.filters.priceMin=newFilters.priceMin;
+    console.log(this.filters);
+    this._productService.query(newFilters).subscribe(data => {
       if (data.numproducts == 0) {
         this.isProducts = false;
       } else {
@@ -52,14 +60,12 @@ export class ListProductsComponent implements OnInit {
     this.shDetails.emit(value);
   }
 
-  // loadPage(pagination: Filters) {
-  //   this.filters.limit=pagination.limit;
-  //   this.filters.offset=pagination.offset;
-  //   this.getAllProducts(this.filters);
-  // }
+  loadPage(newFilters: Filters) {
+    this.getAllProducts(newFilters);
+  }
 
-  // loadFilters() {
-
-  // }
+  loadFilters(newFilters: Filters) {
+    this.getAllProducts(newFilters);
+  }
 
 }

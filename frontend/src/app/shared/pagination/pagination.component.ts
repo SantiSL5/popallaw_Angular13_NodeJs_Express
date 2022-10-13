@@ -30,8 +30,6 @@ export class PaginationComponent {
   ) { }
 
   setNumPages(count: number): void {
-    console.log(count);
-
     this.numpages = Math.ceil(count / 6);
     for (let i = 0; i < this.numpages; i++) {
       this.pages[i] = i + 1;

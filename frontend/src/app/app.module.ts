@@ -12,7 +12,6 @@ import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { ToastrModule } from 'ngx-toastr';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -28,7 +27,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
     SharedModule,
     CoreModule,
     InfiniteScrollModule,
-    NgxPaginationModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       closeButton: true,

@@ -11,7 +11,9 @@ import { CategoryService } from 'src/app/core/services/category.service';
 export class FiltersComponent implements OnInit {
   @Output() filtersChange = new EventEmitter<Filters>();
   listCategories: Category[] = [];
-  filters!: Filters
+  filters: Filters = {
+    category : undefined
+  };
 
   constructor(private _categoryService: CategoryService) {}
 
@@ -25,9 +27,12 @@ export class FiltersComponent implements OnInit {
     });
   }
 
-  categoryset(category: string) {
-    this.filters.category=category;
-    this.filtersChange.emit(this.filters);
+  categorySet(category: string | undefined) {
+    if (category) {
+      console.log(this.filters);
+      this.filters.category=category;
+      this.filtersChange.emit(this.filters);
+    }
   }
 
 }
