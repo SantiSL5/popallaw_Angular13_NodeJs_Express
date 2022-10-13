@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Category } from 'src/app/core/models/category';
+import { Filters } from 'src/app/core/models/filters';
 import { CategoryService } from 'src/app/core/services/category.service';
 
 @Component({
@@ -8,9 +9,9 @@ import { CategoryService } from 'src/app/core/services/category.service';
   styleUrls: ['./filters.component.css']
 })
 export class FiltersComponent implements OnInit {
-  @Output() onCategoryChange = new EventEmitter<any>();
-  categoryfilt: String | undefined;
+  @Output() filtersChange = new EventEmitter<Filters>();
   listCategories: Category[] = [];
+  filters!: Filters
 
   constructor(private _categoryService: CategoryService) {}
 
@@ -24,9 +25,9 @@ export class FiltersComponent implements OnInit {
     });
   }
 
-  categoryset(category:String|undefined) {
-    this.categoryfilt=category;
-    this.onCategoryChange.emit(this.categoryfilt);
+  categoryset(category: string) {
+    this.filters.category=category;
+    this.filtersChange.emit(this.filters);
   }
 
 }

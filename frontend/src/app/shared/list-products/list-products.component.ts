@@ -20,6 +20,7 @@ export class ListProductsComponent implements OnInit {
   detailedProduct!: Product;
   productCount!: number;
   isProducts: Boolean = true;
+  filters!: Filters;
   defaultFilters: Filters = {
     limit: 6,
     offset: 0
@@ -51,8 +52,14 @@ export class ListProductsComponent implements OnInit {
     this.shDetails.emit(value);
   }
 
-  loadPage(filters: Filters) {
-    this.getAllProducts(filters);
-  }
+  // loadPage(pagination: Filters) {
+  //   this.filters.limit=pagination.limit;
+  //   this.filters.offset=pagination.offset;
+  //   this.getAllProducts(this.filters);
+  // }
+
+  // loadFilters() {
+
+  // }
 
 }

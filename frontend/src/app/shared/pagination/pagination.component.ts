@@ -24,7 +24,7 @@ export class PaginationComponent {
     limit: 6,
     offset: 0
   };
-  @Output() filtersList = new EventEmitter<Filters>();
+  @Output() pageChange = new EventEmitter<Filters>();
 
   constructor(
   ) { }
@@ -55,7 +55,7 @@ export class PaginationComponent {
       this.onMostRight = true;
     }
 
-    this.filtersList.emit(this.filters);
+    this.pageChange.emit(this.filters);
 
     // this.location.replaceState('/shop/' + btoa(JSON.stringify(this.filters)));
     // this.getListFiltered(this.filters);

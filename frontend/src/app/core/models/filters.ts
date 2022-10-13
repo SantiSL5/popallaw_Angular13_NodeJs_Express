@@ -4,7 +4,7 @@ export class Filters {
     name?: string;
     priceMin?: number;
     priceMax?: number;
-    category?: number;
+    category?: string;
 
     constructor(
         limit?: number,
@@ -12,7 +12,7 @@ export class Filters {
         name?: string,
         priceMin?: number,
         priceMax?: number,
-        category?: number
+        category?: string
     ) {
         this.limit = limit || 3;
         this.offset = offset || 0;
