@@ -17,11 +17,10 @@ export class FiltersComponent implements OnInit {
   };
 
   constructor(private _categoryService: CategoryService) {
-    this.getAllCategories();
   }
 
   ngOnInit(): void {
-    
+    this.getAllCategories();
   }
 
   getAllCategories(): void {
