@@ -21,6 +21,8 @@ exports.getProducts = async (req, res) => {
     try {
         queryfind={};
         if (req.query.category != 'undefined' && req.query.category != undefined) queryfind.category=req.query.category;
+        if (req.query.name != 'undefined' && req.query.name != undefined) queryfind.name=new RegExp('.*'+req.query.name+'*.',"i");
+        
         limit=Number(req.query.limit);
         offset=Number(req.query.offset);
         const products = await Product.find(queryfind).populate('categoryname').limit(limit).skip(offset);

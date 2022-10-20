@@ -1,0 +1,27 @@
+.search {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search input {
+    height: 30px;
+    width: 200px;
+    border-radius: 9px;
+}
+
+.search button {
+    background-color: transparent;
+    color: white;
+    margin-left: 10px;
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.search button:hover {
+    background: white;
+    color: #262626;
+    text-decoration: none;
+}

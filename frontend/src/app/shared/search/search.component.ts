@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -8,9 +9,24 @@ import { Component, OnInit } from '@angular/core';
 export class SearchComponent implements OnInit {
   search: String = '';
 
-  constructor() { }
+  constructor(
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  public autoComplete(data: any): void {
+
+
+  }
+
+  public enterEvent(data: any): void {
+    if (typeof data.search === 'string') {
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['/shop'], { queryParams: { search: this.search } });
+      });
+    }
   }
 
 }

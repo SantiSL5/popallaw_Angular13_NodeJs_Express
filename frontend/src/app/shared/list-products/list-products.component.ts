@@ -4,6 +4,7 @@ import { Filters } from 'src/app/core/models/filters';
 import { ProductService } from 'src/app/core/services/product.service';
 import { ToastrService } from 'ngx-toastr';
 import { PaginationComponent } from '../pagination/pagination.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-list-products',
@@ -12,7 +13,7 @@ import { PaginationComponent } from '../pagination/pagination.component';
 })
 
 export class ListProductsComponent implements OnInit {
-  @ViewChild(PaginationComponent) 
+  @ViewChild(PaginationComponent)
   private pagComponent: PaginationComponent = new PaginationComponent;
 
   @Output() shDetails = new EventEmitter<string>();
@@ -25,29 +26,36 @@ export class ListProductsComponent implements OnInit {
     limit: 6,
     offset: 0
   };
+  urlParams: any = [];
 
   constructor(
     private _productService: ProductService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.filters=this.defaultFilters;
+    this.filters = this.defaultFilters;
+    this.getUrl();
     this.getAllProducts(this.filters, "start");
   }
 
   getAllProducts(newFilters: Filters, call: string): void {
-    if (call=="filters") {
-      this.filters.limit=this.defaultFilters.limit;
-      this.filters.offset=this.defaultFilters.offset;
-      this.filters.category=newFilters.category;
-      this.filters.name=newFilters.name;
-      this.filters.priceMax=newFilters.priceMax;
-      this.filters.priceMin=newFilters.priceMin;
+    if (call == "filters") {
+      this.filters.limit = this.defaultFilters.limit;
+      this.filters.offset = this.defaultFilters.offset;
+      this.filters.category = newFilters.category;
+      // this.filters.name = newFilters.name;
+      // this.filters.name = this.urlParams['search'];
+      this.filters.priceMax = newFilters.priceMax;
+      this.filters.priceMin = newFilters.priceMin;
     }
-    if (call=="pagination") {
-      this.filters.limit=newFilters.limit;
-      this.filters.offset=newFilters.offset;
+    if (this.urlParams['search']) {
+      this.filters.name = this.urlParams['search'];
+    }
+    if (call == "pagination") {
+      this.filters.limit = newFilters.limit;
+      this.filters.offset = newFilters.offset;
     }
     this._productService.query(this.filters).subscribe(data => {
       if (data.numproducts == 0) {
@@ -71,6 +79,13 @@ export class ListProductsComponent implements OnInit {
 
   loadFilters(newFilters: Filters) {
     this.getAllProducts(newFilters, "filters");
+  }
+
+  getUrl() {
+    this.route.queryParams
+      .subscribe(params => {
+        this.urlParams = params;
+      });
   }
 
 }

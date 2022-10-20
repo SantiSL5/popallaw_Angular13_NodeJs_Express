@@ -1,2 +1,4 @@
-<!-- <input type="text" name="search" id="search" placeholder="Search" [(ngModel)]="search">
-<button [routerLink]="['/shop']" [queryParams]="{'search':search}">Search</button> -->
+<div class="search">
+    <input type="text" name="search" placeholder="Search" [(ngModel)]="search" (keyup)="autoComplete(this)" (change)="enterEvent(this)">
+    <button [routerLink]="['/shop']" [queryParams]="{'search':search}">Search</button>
+</div>
