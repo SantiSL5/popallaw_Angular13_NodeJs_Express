@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-auth',
@@ -7,10 +8,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthComponent implements OnInit {
   form: String = 'login';
+  loginForm: FormGroup;
+  registerForm: FormGroup;
 
-  constructor() { }
+  constructor(
+    private fb: FormBuilder
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(5)]],
+    });
+
+    this.registerForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      username: ['', [Validators.required, Validators.minLength(2)]],
+      password: ['', [Validators.required, Validators.minLength(5)]],
+      repeatPassword: ['', [Validators.required, Validators.minLength(5)]],
+    });
+
+  }
 
   ngOnInit(): void {
+  }
+
+  submitForm() {
+    const credentials = this.loginForm.value;
+    console.log(credentials);
+    console.log();
   }
 
 }

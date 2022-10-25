@@ -1,16 +1,66 @@
-<div>
-    <form>
-        <div *ngIf="form === 'login'">
+<div class="divForm">
+    <div *ngIf="form === 'login'">
+        <form [formGroup]="loginForm" (ngSubmit)="submitForm()">
+
             <h3>Login</h3>
-            <label for="user">User: <input type="text" name="user"></label>
-            <label for="user">Password: <input type="text" name="user"></label>
-            <p>Don't have an account? <a (click)="form = 'register'">Create one</a></p>
-        </div>
-        <div *ngIf="form === 'register'">
+            <label for="email">Email:<br> <input type="text" name="email" formControlName="email"></label><br>
+            <div class="text-danger" *ngIf="loginForm.get('email')?.hasError('required') &&
+                                loginForm.get('email')?.touched || loginForm.get('email')?.hasError('email') &&
+                                loginForm.get('email')?.touched">
+                <span>E-mail <strong>required</strong></span>
+            </div>
+
+            <label for="password">Password:<br> <input type="password" name="password"
+                    formControlName="password"></label><br>
+            <div class="text-danger" *ngIf="loginForm.get('password')?.hasError('required') &&
+            loginForm.get('password')?.touched || loginForm.get('password')?.hasError('minlength') &&
+            loginForm.get('password')?.touched">
+                <span>Password <strong>required</strong>, 5 characters min</span>
+            </div>
+
+            <p>Don't have an account? <b (click)="form = 'register'">Create one</b></p><br>
+            <button class="btn btn-lg btn-block btn-primary mb-2" type="submit"
+                [disabled]="!loginForm.valid">Login</button>
+        </form>
+
+    </div>
+    <div *ngIf="form === 'register'">
+        <form [formGroup]="registerForm" (ngSubmit)="submitForm()">
+
             <h3>Register</h3>
-            <label for="user">User: <input type="text" name="user"></label>
-            <label for="user">Password: <input type="text" name="user"></label>
-            <label for="user">Repeat password: <input type="text" name="user"></label>
-        </div>
-    </form>
+            <label for="username">Username:<br> <input type="text" name="user" formControlName="username"></label><br>
+            <div class="text-danger" *ngIf="registerForm.get('username')?.hasError('required') &&
+                    registerForm.get('username')?.touched || registerForm.get('username')?.hasError('minlength') &&
+                    registerForm.get('username')?.touched">
+                <span>Username <strong>required</strong></span>
+            </div>
+
+            <label for="email">Email:<br> <input type="text" name="email" formControlName="email"></label><br>
+            <div class="text-danger" *ngIf="registerForm.get('email')?.hasError('required') &&
+            registerForm.get('email')?.touched || registerForm.get('email')?.hasError('email') &&
+            registerForm.get('email')?.touched">
+                <span>E-mail <strong>required</strong></span>
+            </div>
+
+            <label for="password">Password:<br> <input type="password" name="password"
+                    formControlName="password"></label><br>
+            <div class="text-danger" *ngIf="registerForm.get('password')?.hasError('required') &&
+                    registerForm.get('password')?.touched || registerForm.get('password')?.hasError('minlength') &&
+                    registerForm.get('password')?.touched">
+                <span>Password <strong>required</strong>, 5 characters min</span>
+            </div>
+
+            <label for="repeatPassword">Repeat password:<br> <input type="password" name="repeatPassword"
+                    formControlName="repeatPassword"></label><br>
+            <div class="text-danger" *ngIf="registerForm.get('repeatPassword')?.hasError('required') &&
+                    registerForm.get('repeatPassword')?.touched || registerForm.get('repeatPassword')?.hasError('minlength') &&
+                    registerForm.get('repeatPassword')?.touched">
+                <span>Passwords <strong>must</strong> be equal.</span>
+            </div>
+
+            <button class="btn btn-lg btn-block btn-primary mb-2" type="submit"
+                [disabled]="!registerForm.valid">Register</button>
+        </form>
+
+    </div>
 </div>
