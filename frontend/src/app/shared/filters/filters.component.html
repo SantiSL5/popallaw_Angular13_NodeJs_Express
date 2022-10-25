@@ -1,6 +1,9 @@
-<div>
-    <select name="category" [(ngModel)]="selectedValue" (change)="categorySet(selectedValue)">
+<div id="filters">
+    <select id="category" name="category" [(ngModel)]="selectedValue" (change)="categorySet(selectedValue)">
         <option [value]="undefined">Category</option>
         <option *ngFor="let category of listCategories" [value]="category.slug">{{category.name}}</option>
     </select>
+    <section id="slider">
+        <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options"></ngx-slider>
+    </section>
 </div>

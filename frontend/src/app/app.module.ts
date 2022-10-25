@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
-
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +12,7 @@ import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { ToastrModule } from 'ngx-toastr';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
       closeButton: true,
       progressBar: true,
     }),
-    MdbCarouselModule
+    MdbCarouselModule,
+    NgxSliderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

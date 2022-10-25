@@ -1,2 +1,2 @@
-<app-header></app-header>
-<router-outlet></router-outlet>
+<app-header *ngIf="loaded | async"></app-header>
+<router-outlet *ngIf="loaded | async"></router-outlet>

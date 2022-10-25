@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: '',
     component: ShopComponent,
+  },
+  {
+    path: '/item/:slug',
+    component: ShopComponent,
   }
 ];
 

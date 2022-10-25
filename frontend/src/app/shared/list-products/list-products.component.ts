@@ -5,6 +5,7 @@ import { ProductService } from 'src/app/core/services/product.service';
 import { ToastrService } from 'ngx-toastr';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { ActivatedRoute } from '@angular/router';
+// import { FiltersComponent } from '../filters/filters.component';
 
 @Component({
   selector: 'app-list-products',
@@ -14,9 +15,12 @@ import { ActivatedRoute } from '@angular/router';
 
 export class ListProductsComponent implements OnInit {
   @ViewChild(PaginationComponent)
+  // @ViewChild(FiltersComponent)
   private pagComponent: PaginationComponent = new PaginationComponent;
+  // private filComponent: PaginationComponent = new PaginationComponent;
 
   @Output() shDetails = new EventEmitter<string>();
+  products:any;
   listProducts: Product[] = [];
   detailedProduct!: Product;
   productCount!: number;
@@ -26,6 +30,8 @@ export class ListProductsComponent implements OnInit {
     limit: 6,
     offset: 0
   };
+  minValue=0;
+  maxValue=0;
   urlParams: any = [];
 
   constructor(
@@ -64,6 +70,8 @@ export class ListProductsComponent implements OnInit {
         this.isProducts = true;
         this.listProducts = data.products;
         this.productCount = data.numproducts;
+        this.maxValue = data.maxprice;
+        this.minValue = data.minprice;
         this.pagComponent.setNumPages(this.productCount)
       }
     });

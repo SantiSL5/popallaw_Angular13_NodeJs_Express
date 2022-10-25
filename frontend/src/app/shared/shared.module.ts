@@ -14,6 +14,7 @@ import { DetailsProductComponent } from './details-product/details-product.compo
 import { PaginationComponent } from './pagination/pagination.component';
 import { FiltersComponent } from './filters/filters.component';
 import { SearchComponent } from './search/search.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { SearchComponent } from './search/search.component';
     RouterModule,
     InfiniteScrollModule,
     MdbCarouselModule,
-    FormsModule
+    FormsModule,
+    NgxSliderModule
   ],
   exports: [
     ListProductsComponent,

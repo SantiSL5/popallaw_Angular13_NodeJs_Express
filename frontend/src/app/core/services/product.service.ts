@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable ,  BehaviorSubject ,  ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApiService } from './api.service';
 import { Product } from '../models/product';
@@ -12,9 +12,60 @@ import { map } from 'rxjs/operators';
 })
 
 export class ProductService {
+  private productsSubject = new BehaviorSubject<any>({} as any);
+
+  public products = this.productsSubject.asObservable();
+
+  private filtersSubject = new BehaviorSubject<Filters>({} as Filters);
+
+  public filters = this.filtersSubject.asObservable();
+  filtersServ: Filters = {
+    limit: 6,
+    offset: 0
+  };
+  urlParams: any = [];
+  defaultFilters: Filters = {
+    limit: 6,
+    offset: 0
+  };
+
+  // filtersSubject.next(defaultFilters);
+
   constructor(
     private apiService: ApiService
   ) { }
+
+  getFilters(): Filters {
+    return this.filtersSubject.value;
+  }
+
+  async setFilters(filters: Filters, call:string="undefined") {
+    this.filtersServ=this.getFilters();
+    if (call=="category") {
+      filters.priceMin=this.getProducts().minprice;
+      filters.priceMax=this.getProducts().maxprice;
+      this.filtersSubject.next({...this.filtersSubject.value, ...filters});
+    }else{
+      filters.priceMin=this.getProducts().minprice;
+      filters.priceMax=this.getProducts().maxprice;
+      this.filtersSubject.next(filters);
+    }
+    await this.refreshProducts();
+  }
+
+  setProducts(products: any) {
+    this.productsSubject.next(products);
+  }
+
+  getProducts(): any {
+    return this.productsSubject.value;
+  }
+
+  async refreshProducts() {
+    await this.query(this.filtersSubject.value).subscribe(data => {
+      this.setProducts(data);
+    });
+  }
 
   query(filters: Filters): Observable<any> {
     let params = {};

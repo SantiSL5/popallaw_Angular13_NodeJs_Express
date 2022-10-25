@@ -1,4 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
+import { Filters } from '../core/models/filters';
+import { ProductService } from '../core/services/product.service';
 
 @Component({
   selector: 'app-shop',
@@ -9,8 +11,13 @@ export class ShopComponent implements OnInit {
 
   view: String = "list";
   slug: string = "";
+  defaultFilters: Filters = {
+    limit: 6,
+    offset: 0
+  };
+  
 
-  constructor() { }
+  constructor(  private _productService: ProductService) { }
 
   ngOnInit(): void {
   }
