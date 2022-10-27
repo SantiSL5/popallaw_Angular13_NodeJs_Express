@@ -32,9 +32,14 @@ export class AuthComponent implements OnInit {
   }
 
   submitForm() {
-    const credentials = this.loginForm.value;
-    console.log(credentials);
-    console.log();
+    if (this.form == "login") {
+      const credentials = this.loginForm.value;
+      console.log(credentials);
+    } else {
+      const credentials = this.registerForm.value;
+      console.log(credentials);
+
+    }
   }
 
 }
