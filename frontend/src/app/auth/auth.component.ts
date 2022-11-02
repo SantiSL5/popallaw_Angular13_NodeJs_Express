@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { UserService } from '../core/services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -12,7 +14,9 @@ export class AuthComponent implements OnInit {
   registerForm: FormGroup;
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router,
+    private userService: UserService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -33,13 +37,18 @@ export class AuthComponent implements OnInit {
 
   submitForm() {
     if (this.form == "login") {
-      const credentials = this.loginForm.value;
-      console.log(credentials);
+      this.serviceRequest(this.loginForm.value);
     } else {
-      const credentials = this.registerForm.value;
-      console.log(credentials);
-
+      this.serviceRequest(this.registerForm.value);
     }
+  }
+
+  serviceRequest(credentials: object) {
+    this.userService
+      .attemptAuth(this.form, credentials)
+      .subscribe(
+        data => this.router.navigateByUrl('/')
+      );
   }
 
 }
