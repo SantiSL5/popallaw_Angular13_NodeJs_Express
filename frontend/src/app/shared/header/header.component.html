@@ -7,9 +7,19 @@
     <li class="nav-item">
       <a routerLink="/shop/" class="nav-link">SHOP</a>
     </li>
-    <li class="nav-item">
-      <a routerLink="/login/" class="nav-link">LOGIN</a>
-    </li>
   </div>
-  <app-search></app-search>
+  <div class="collapse navbar-collapse flex-grow-0" id="navbarSupportedContent">
+    <ul class="navbar-nav text-right">
+      <li class="nav-item">
+        <app-search></app-search>
+      </li>
+      <li *appShowAuthed="true" class="nav-item">
+        <a routerLink="/login/" class="nav-link">{{ currentUser.username }}</a>
+        <button>Log out</button>
+      </li>
+      <li *appShowAuthed="false" class="nav-item">
+        <a routerLink="/login/" class="nav-link">LOGIN</a>
+      </li>
+    </ul>
+  </div>
 </nav>

@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, ReplaySubject } from 'rxjs';
-import { map, distinctUntilChanged } from 'rxjs/operators';
+import { map, distinctUntilChanged, catchError } from 'rxjs/operators';
 import { JwtService } from './jwt.service';
 import { User } from '../models/user';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { ApiService } from './api.service';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +22,10 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private apiService: ApiService,
+    private router: Router,
+    private toastr: ToastrService
   ) { }
 
 
@@ -60,9 +66,16 @@ export class UserService {
 
   attemptAuth(type: string | String, credentials: any): Observable<any> {
     const route = (type === 'login') ? '/login' : '/register';
-    return this.http.post(environment.urlUser + route, { user: credentials }).pipe(map(data => {
-      this.setAuth(data);
-      return data;
+    return this.apiService.post('/user' + route, credentials).pipe(map(data => {
+      if (data.msg == undefined) {
+        console.log(data);
+        this.setAuth(data);
+        // this.router.navigateByUrl('/');
+      }else {
+        if ((type === 'login')) {
+          this.toastr.error(data.msg, 'Login');
+        }
+      }
     }));
   }
 

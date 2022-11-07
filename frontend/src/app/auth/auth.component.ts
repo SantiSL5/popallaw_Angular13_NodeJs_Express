@@ -44,11 +44,9 @@ export class AuthComponent implements OnInit {
   }
 
   serviceRequest(credentials: object) {
-    this.userService
-      .attemptAuth(this.form, credentials)
-      .subscribe(
-        data => this.router.navigateByUrl('/')
-      );
+    this.userService.attemptAuth(this.form, credentials).subscribe( data => {
+      console.log(data, "aaaa");
+    })
   }
 
 }

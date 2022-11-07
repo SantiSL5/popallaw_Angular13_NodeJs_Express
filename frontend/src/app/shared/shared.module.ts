@@ -15,6 +15,7 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { FiltersComponent } from './filters/filters.component';
 import { SearchComponent } from './search/search.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { ShowAuthedDirective } from './show-authed.directive'
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     DetailsProductComponent,
     PaginationComponent,
     FiltersComponent,
-    SearchComponent
+    SearchComponent,
+    ShowAuthedDirective
   ],
   imports: [
     CommonModule,

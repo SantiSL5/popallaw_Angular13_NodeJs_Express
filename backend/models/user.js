@@ -24,7 +24,7 @@ var UserSchema = new mongoose.Schema({
 //   foreignField: 'seller'
 // })
 
-UserSchema.plugin(uniqueValidator, { message: 'is already taken.' });
+UserSchema.plugin(uniqueValidator, { message: '{PATH} is already taken.' });
 
 UserSchema.methods.validPassword = function (password) {
     var hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');

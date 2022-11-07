@@ -7,7 +7,7 @@ export const environment = {
   api_url: "http://localhost:3000/api",
   urlProduct: 'http://localhost:3000/api/product',
   urlCategory: 'http://localhost:3000/api/category',
-  urlUser: 'http://localhost:3000/api/category'
+  urlUser: 'http://localhost:3000/api/user'
 };
 
 /*
