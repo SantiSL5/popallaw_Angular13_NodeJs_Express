@@ -33,17 +33,8 @@ export class FiltersComponent implements OnInit {
     this.options= {
       floor: this.minValue,
       ceil: this.maxValue,
-      translate: (value: number, label: LabelType): string => {
-        switch (label) {
-          case LabelType.Low:
-            return '<b>Min price:</b> €' + value;
-          case LabelType.High:
-            return '<b>Max price:</b> €' + value;
-          default:
-            return '€' + value;
-        }
-      }
     };
+    this.setOptions();
     this.getAllCategories();
   }
 
@@ -55,14 +46,66 @@ export class FiltersComponent implements OnInit {
   }
 
   categorySet(category: string | undefined) {
+    this.filters=this._productService.getFilters();
     this.filters.category = category;
+    this.filters.priceMax=undefined;
+    this.filters.priceMin=undefined;
+    this.setFilters("category");
+  }
 
-    this._productService.setFilters(this.filters,"category");
-    // this.minValue=this._productService.getFilters().priceMin;
-    // this.maxValue=this._productService.getFilters().priceMax;
-    this.options.floor=this._productService.getProducts().minprice;
-    this.options.ceil=this._productService.getProducts().maxprice;
-    this.filtersChange.emit(this.filters);
+  async setFilters(call:string){
+    this._productService.setFilters(this.filters,call);
+    await setTimeout(()=>{
+      this.setOptions();
+      this.filtersChange.emit();
+    }, 20) ;
+  }
+
+  setOptions() {    
+    const newOptions: Options = Object.assign({}, this.options);
+    let newPriceMax: number =this.maxValue;
+    let newPriceMin: number =this.minValue;
+    newPriceMin=this._productService.getProducts().minprice;
+    newPriceMax=this._productService.getProducts().maxprice;
+    newOptions.floor=this._productService.getProducts().minprice;
+    newOptions.ceil=this._productService.getProducts().maxprice;
+    if (this.options.floor == 0 && this.options.ceil == 0) {
+      newOptions.translate= (value: number, label: LabelType): string => {
+        switch (label) {
+          case LabelType.Low:
+            return "";
+          case LabelType.High:
+            return "";
+          default:
+            return '€' + value;
+        }
+      }
+    }else if (newPriceMin == newPriceMax) {
+      newOptions.translate= (value: number, label: LabelType): string => {
+        switch (label) {
+          case LabelType.Low:
+            return '';
+          case LabelType.High:
+            return '';
+          default:
+            return '€' + value;
+        }
+      }
+    }else  {
+      newOptions.translate= (value: number, label: LabelType): string => {
+        switch (label) {
+          case LabelType.Low:
+            return '<b>Min price:</b> €' + value;
+          case LabelType.High:
+            return '<b>Max price:</b> €' + value;
+          default:
+            return '€' + value;
+        }
+      }
+    }
+    this.minValue = newPriceMax;
+    this.minValue = newPriceMin;
+    this.options = newOptions;
   }
 
 

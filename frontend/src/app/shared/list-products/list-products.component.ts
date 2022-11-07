@@ -5,6 +5,7 @@ import { ProductService } from 'src/app/core/services/product.service';
 import { ToastrService } from 'ngx-toastr';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
 // import { FiltersComponent } from '../filters/filters.component';
 
 @Component({
@@ -14,11 +15,6 @@ import { ActivatedRoute } from '@angular/router';
 })
 
 export class ListProductsComponent implements OnInit {
-  @ViewChild(PaginationComponent)
-  // @ViewChild(FiltersComponent)
-  private pagComponent: PaginationComponent = new PaginationComponent;
-  // private filComponent: PaginationComponent = new PaginationComponent;
-
   @Output() shDetails = new EventEmitter<string>();
   products:any;
   listProducts: Product[] = [];
@@ -43,50 +39,33 @@ export class ListProductsComponent implements OnInit {
   ngOnInit(): void {
     this.filters = this.defaultFilters;
     this.getUrl();
-    this.getAllProducts(this.filters, "start");
+    this.getAllProducts();
   }
 
-  getAllProducts(newFilters: Filters, call: string): void {
-    if (call == "filters") {
-      this.filters.limit = this.defaultFilters.limit;
-      this.filters.offset = this.defaultFilters.offset;
-      this.filters.category = newFilters.category;
-      // this.filters.name = newFilters.name;
-      // this.filters.name = this.urlParams['search'];
-      this.filters.priceMax = newFilters.priceMax;
-      this.filters.priceMin = newFilters.priceMin;
+  getAllProducts(): void {
+    this.products=this._productService.getProducts();
+    if (this.products.numproducts == 0) {
+      this.isProducts = false;
+    } else {
+      this.isProducts = true;
+      this.listProducts = this.products.products;
+      this.productCount = this.products.numproducts;
+      this.maxValue = this.products.maxprice;
+      this.minValue = this.products.minprice;
+      // this.changePagination.next();
     }
-    if (this.urlParams['search']) {
-      this.filters.name = this.urlParams['search'];
-    }
-    if (call == "pagination") {
-      this.filters.limit = newFilters.limit;
-      this.filters.offset = newFilters.offset;
-    }
-    this._productService.query(this.filters).subscribe(data => {
-      if (data.numproducts == 0) {
-        this.isProducts = false;
-      } else {
-        this.isProducts = true;
-        this.listProducts = data.products;
-        this.productCount = data.numproducts;
-        this.maxValue = data.maxprice;
-        this.minValue = data.minprice;
-        this.pagComponent.setNumPages(this.productCount)
-      }
-    });
   }
 
   showDetails(value: string) {
     this.shDetails.emit(value);
   }
 
-  loadPage(newFilters: Filters) {
-    this.getAllProducts(newFilters, "pagination");
+  loadPage() {
+    this.getAllProducts();
   }
 
-  loadFilters(newFilters: Filters) {
-    this.getAllProducts(newFilters, "filters");
+  loadFilters() {
+    this.getAllProducts();
   }
 
   getUrl() {

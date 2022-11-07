@@ -21,9 +21,10 @@ export class PaginationComponent {
   onMostLeft: Boolean = true;
   onMostRight: Boolean = false;
 
-  @Output() pageChange = new EventEmitter<Filters>();
+  @Output() pageChange = new EventEmitter<void>();
 
   constructor(
+    private _productService: ProductService,
   ) { }
 
   setNumPages(count: number): void {
@@ -35,15 +36,22 @@ export class PaginationComponent {
     this.checkMove();
   }
 
-  setPageTo(pageNumber: number) {
-    this.actualpage = pageNumber;
+  async setPageTo(pageNumber: number) {
 
+    this._productService.setFilters(this.filters,"pagination");
+
+    this.actualpage = pageNumber;
     this.filters.limit = 6;
     this.filters.offset = this.filters.limit * (this.actualpage - 1);
+    this._productService.setFilters(this.filters);
 
     this.checkMove();
 
-    this.pageChange.emit(this.filters);
+    await setTimeout(()=>{
+      this.actualpage = pageNumber;
+      this.pageChange.emit();
+    }, 20) ;
+    
 
     // this.location.replaceState('/shop/' + btoa(JSON.stringify(this.filters)));
     // this.getListFiltered(this.filters);

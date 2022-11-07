@@ -1,4 +1,4 @@
-<app-filters (filtersChange)="loadFilters($event)"></app-filters>
+<app-filters (filtersChange)="loadFilters()"></app-filters>
 <div class="main">
   <div class="container page-wrapper">
     <div class="page-inner">
@@ -33,4 +33,4 @@
     </div>
   </div>
 </div>
-<app-pagination [hidden]="!isProducts" (pageChange)="loadPage($event)"></app-pagination>
+<app-pagination [hidden]="!isProducts" (pageChange)="loadFilters()"></app-pagination>

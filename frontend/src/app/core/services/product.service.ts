@@ -19,6 +19,7 @@ export class ProductService {
   private filtersSubject = new BehaviorSubject<Filters>({} as Filters);
 
   public filters = this.filtersSubject.asObservable();
+
   filtersServ: Filters = {
     limit: 6,
     offset: 0
@@ -42,8 +43,12 @@ export class ProductService {
   async setFilters(filters: Filters, call:string="undefined") {
     this.filtersServ=this.getFilters();
     if (call=="category") {
-      filters.priceMin=this.getProducts().minprice;
-      filters.priceMax=this.getProducts().maxprice;
+      filters.priceMin=undefined;
+      filters.priceMax=undefined;
+      this.filtersSubject.next({...this.filtersSubject.value, ...filters});
+    }else if (call=="category") {
+      filters.priceMin=undefined;
+      filters.priceMax=undefined;
       this.filtersSubject.next({...this.filtersSubject.value, ...filters});
     }else{
       filters.priceMin=this.getProducts().minprice;
@@ -64,6 +69,7 @@ export class ProductService {
   async refreshProducts() {
     await this.query(this.filtersSubject.value).subscribe(data => {
       this.setProducts(data);
+      //hacerlo false cuando  en el filters
     });
   }
 

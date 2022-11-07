@@ -4,7 +4,6 @@ const slugf = require('slug');
 const FormatSuccess = require('../utils/responseApi.js').FormatSuccess;
 const FormatError = require('../utils/responseApi.js').FormatError;
 const FormatObject = require('../utils/responseApi.js').FormatObject;
-const category = require("../models/category");
 
 exports.createProduct = async (req, res) => {
     try {
@@ -22,29 +21,37 @@ exports.getProducts = async (req, res) => {
         queryfind={};
         if (req.query.category != 'undefined' && req.query.category != undefined) queryfind.category=req.query.category;
         if (req.query.name != 'undefined' && req.query.name != undefined) queryfind.name=new RegExp('.*'+req.query.name+'*.',"i");
-        const pipeline = [
-            { $match : queryfind },
-            { $project : {
-                "typeID": 1,
-                "highestPrice": "$price",
-                "lowestPrice": "$price"
-            }},
-            { "$group": {
-                "_id": "$typeID",
-                "highestPrice": { "$max": "$highestPrice" },
-                "lowestPrice": { "$min": "$lowestPrice" }
-            }},
-        ];
-        const prices = await Product.aggregate(pipeline);
-        const minprice = prices[0].lowestPrice;
-        const maxprice = prices[0].highestPrice;
-        limit=Number(req.query.limit);
-        offset=Number(req.query.offset);
         if (req.query.priceMin != 'undefined' && req.query.priceMin != undefined && req.query.priceMax != 'undefined' && req.query.priceMax != undefined) {
             queryfind.price= {$gt:Number(req.query.priceMin)-1, $lt:Number(req.query.priceMax)+1};
         }
+        limit=Number(req.query.limit);
+        offset=Number(req.query.offset);
         const products = await Product.find(queryfind).populate('categoryname').limit(limit).skip(offset);
         const numproducts = await Product.find(queryfind).populate('categoryname').count();
+        if (products.length > 0) {
+            queryfind={};
+            if (req.query.category != 'undefined' && req.query.category != undefined) queryfind.category=req.query.category;
+            if (req.query.name != 'undefined' && req.query.name != undefined) queryfind.name=new RegExp('.*'+req.query.name+'*.',"i");
+            const pipeline = [
+                { $match : queryfind },
+                { $project : {
+                    "typeID": 1,
+                    "highestPrice": "$price",
+                    "lowestPrice": "$price"
+                }},
+                { "$group": {
+                    "_id": "$typeID",
+                    "highestPrice": { "$max": "$highestPrice" },
+                    "lowestPrice": { "$min": "$lowestPrice" }
+                }},
+            ];
+            const prices = await Product.aggregate(pipeline);
+            minprice = prices[0].lowestPrice;
+            maxprice = prices[0].highestPrice;
+        }else {
+            minprice = 0;
+            maxprice = 0;
+        }
         res.json(FormatObject({numproducts,products,minprice,maxprice}));
     } catch (error) {
         console.log(error);
