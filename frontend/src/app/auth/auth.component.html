@@ -52,9 +52,9 @@
 
             <label for="repeatPassword">Repeat password:<br> <input type="password" name="repeatPassword"
                     formControlName="repeatPassword"></label><br>
-            <div class="text-danger" *ngIf="registerForm.get('repeatPassword')?.hasError('required') &&
-                    registerForm.get('repeatPassword')?.touched || registerForm.get('repeatPassword')?.hasError('minlength') &&
-                    registerForm.get('repeatPassword')?.touched">
+            <div class="text-danger" *ngIf="registerForm.get('repeatPassword')?.hasError('required') && registerForm.get('repeatPassword')?.touched
+                    || registerForm.get('repeatPassword')?.hasError('minlength') && registerForm.get('repeatPassword')?.touched
+                    || confirmPassword_invalid && registerForm.get('repeatPassword')?.touched">
                 <span>Passwords <strong>must</strong> be equal.</span>
             </div>
 

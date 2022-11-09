@@ -24,7 +24,7 @@ exports.login = async (req, res) => {
             if (user.validPassword(req.body.password)) {
                 return res.json(user.toAuthJSON());
             } else {
-                return res.json({ msg: "Pass don't match"});
+                return res.json({ msg: "Wrong password"});
             }
         }
     } catch (error) {

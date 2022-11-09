@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { NoAuthGuard } from './core/guards/no-auth-guard.service';
 
 const routes: Routes = [
   {
@@ -8,7 +9,9 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
+    // canActivate: [NoAuthGuard]
+
   },
   {
     path: 'profile',

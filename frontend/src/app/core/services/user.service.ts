@@ -66,21 +66,38 @@ export class UserService {
 
   attemptAuth(type: string | String, credentials: any): Observable<any> {
     const route = (type === 'login') ? '/login' : '/register';
-    return this.apiService.post('/user' + route, credentials).pipe(map(data => {
+    const path = "/user" + route;
+
+
+    return this.login('/user' + route, credentials).pipe(map(data => {
       if (data.msg == undefined) {
-        console.log(data);
         this.setAuth(data);
-        // this.router.navigateByUrl('/');
-      }else {
+        this.router.navigateByUrl('/');
+      } else {
         if ((type === 'login')) {
           this.toastr.error(data.msg, 'Login');
+        } else {
+          console.log(data);
         }
       }
-    }));
+    }))
+  }
+
+  login(path: string, body: Object = {}): Observable<any> {
+    return this.http.post(
+      `${environment.api_url}${path}`,
+      body
+    );
   }
 
   getCurrentUser(): User {
     return this.currentUserSubject.value;
+  }
+
+  getIsAuthenticated(): any {
+    console.log(this.isAuthenticatedSubject);
+
+    return this.isAuthenticatedSubject.subscribe(data => { return data});
   }
 
 }
