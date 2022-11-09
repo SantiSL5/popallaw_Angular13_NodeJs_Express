@@ -13,18 +13,18 @@ exports.loadUser = async (req, res) => {
     }
 }
 
-exports.login = async (req, res) => {    
+exports.login = async (req, res) => {
     try {
-        let user = await User.findOne({email: req.body.email});
+        let user = await User.findOne({ email: req.body.email });
 
         if (!user) {
-            return res.json({ msg: "User doesn't exists"});
+            return res.json({ msg: "User doesn't exists" });
         } else {
 
             if (user.validPassword(req.body.password)) {
                 return res.json(user.toAuthJSON());
             } else {
-                return res.json({ msg: "Wrong password"});
+                return res.json({ msg: "Wrong password" });
             }
         }
     } catch (error) {
@@ -40,33 +40,27 @@ exports.register = async (req, res, next) => {
     user.email = req.body.email;
     user.setPassword(req.body.password);
     user.image = 'profile.png';
+    user.bio = 'Hello, this is my profile.';
 
-    user.save().then(function(){
+    user.save().then(function () {
         return res.json(user.toAuthJSON());
     }).catch(next);
 }
 
 exports.updateUser = async (req, res, next) => {
-
     let user = await User.findById(req.payload.id);
 
-    if(!user){ return res.sendStatus(401); }
+    if (!user) { return res.sendStatus(401); }
 
-    if(typeof req.body.user.username !== 'undefined'){
-        user.username = req.body.user.username;
-    }
-    if(typeof req.body.user.email !== 'undefined'){
-        user.email = req.body.user.email;
-    }
-    if(typeof req.body.user.bio !== 'undefined'){
-        user.bio = req.body.user.bio;
+    if (typeof req.body.bio !== 'undefined') {
+        user.bio = req.body.bio;
     }
 
-    if(typeof req.body.user.password !== 'undefined'){
-        user.setPass(req.body.user.password);
+    if (typeof req.body.password !== 'undefined') {
+        user.setPass(req.body.password);
     }
 
-    user.save().then(function(){
+    user.save().then(function () {
         return res.json(user.toAuthJSON());
     });
 }

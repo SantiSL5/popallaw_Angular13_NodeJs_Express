@@ -12,6 +12,7 @@ var UserSchema = new mongoose.Schema({
     image: String,
     hash: String,
     salt: String,
+    bio: String,
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 }, {
     toJSON: { virtuals: true },
@@ -63,7 +64,8 @@ UserSchema.methods.toProfileJSONFor = function (user) {
     return {
         username: this.username,
         image: this.image || 'https://static.productionready.io/images/smiley-cyrus.jpg',
-        following: user ? user.isFollowing(this._id) : false
+        following: user ? user.isFollowing(this._id) : false,
+        bio: this.bio
     };
 };
 
