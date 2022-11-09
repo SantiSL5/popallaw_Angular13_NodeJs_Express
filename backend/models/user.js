@@ -13,7 +13,8 @@ var UserSchema = new mongoose.Schema({
     hash: String,
     salt: String,
     bio: String,
-    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }]
 }, {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },

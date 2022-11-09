@@ -1,9 +1,32 @@
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
+const User = mongoose.model('User');
 const slugf = require('slug');
 const FormatSuccess = require('../utils/responseApi.js').FormatSuccess;
 const FormatError = require('../utils/responseApi.js').FormatError;
 const FormatObject = require('../utils/responseApi.js').FormatObject;
+
+exports.paramsProduct = async (req, res, next, slug) => {
+    Product.findOne({ "slug": slug })
+        // .populate('categoryname')
+        .then(function (product) {
+            if (!product) { return res.sendStatus(404); }
+
+            req.product = product;
+
+            return next();
+        });
+}
+
+exports.paramsComment = async (req, res, next, username) => {
+    Comment.findById(id).then(function (comment) {
+        if (!comment) { return res.sendStatus(404); }
+
+        req.comment = comment;
+
+        return next();
+    });
+}
 
 exports.createProduct = async (req, res) => {
     try {
@@ -18,41 +41,45 @@ exports.createProduct = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
     try {
-        queryfind={};
-        if (req.query.category != 'undefined' && req.query.category != undefined) queryfind.category=req.query.category;
-        if (req.query.name != 'undefined' && req.query.name != undefined) queryfind.name=new RegExp('.*'+req.query.name+'*.',"i");
+        queryfind = {};
+        if (req.query.category != 'undefined' && req.query.category != undefined) queryfind.category = req.query.category;
+        if (req.query.name != 'undefined' && req.query.name != undefined) queryfind.name = new RegExp('.*' + req.query.name + '*.', "i");
         if (req.query.priceMin != 'undefined' && req.query.priceMin != undefined && req.query.priceMax != 'undefined' && req.query.priceMax != undefined) {
-            queryfind.price= {$gt:Number(req.query.priceMin)-1, $lt:Number(req.query.priceMax)+1};
+            queryfind.price = { $gt: Number(req.query.priceMin) - 1, $lt: Number(req.query.priceMax) + 1 };
         }
-        limit=Number(req.query.limit);
-        offset=Number(req.query.offset);
+        limit = Number(req.query.limit);
+        offset = Number(req.query.offset);
         const products = await Product.find(queryfind).populate('categoryname').limit(limit).skip(offset);
         const numproducts = await Product.find(queryfind).populate('categoryname').count();
         if (products.length > 0) {
-            queryfind={};
-            if (req.query.category != 'undefined' && req.query.category != undefined) queryfind.category=req.query.category;
-            if (req.query.name != 'undefined' && req.query.name != undefined) queryfind.name=new RegExp('.*'+req.query.name+'*.',"i");
+            queryfind = {};
+            if (req.query.category != 'undefined' && req.query.category != undefined) queryfind.category = req.query.category;
+            if (req.query.name != 'undefined' && req.query.name != undefined) queryfind.name = new RegExp('.*' + req.query.name + '*.', "i");
             const pipeline = [
-                { $match : queryfind },
-                { $project : {
-                    "typeID": 1,
-                    "highestPrice": "$price",
-                    "lowestPrice": "$price"
-                }},
-                { "$group": {
-                    "_id": "$typeID",
-                    "highestPrice": { "$max": "$highestPrice" },
-                    "lowestPrice": { "$min": "$lowestPrice" }
-                }},
+                { $match: queryfind },
+                {
+                    $project: {
+                        "typeID": 1,
+                        "highestPrice": "$price",
+                        "lowestPrice": "$price"
+                    }
+                },
+                {
+                    "$group": {
+                        "_id": "$typeID",
+                        "highestPrice": { "$max": "$highestPrice" },
+                        "lowestPrice": { "$min": "$lowestPrice" }
+                    }
+                },
             ];
             const prices = await Product.aggregate(pipeline);
             minprice = prices[0].lowestPrice;
             maxprice = prices[0].highestPrice;
-        }else {
+        } else {
             minprice = 0;
             maxprice = 0;
         }
-        res.json(FormatObject({numproducts,products,minprice,maxprice}));
+        res.json(FormatObject({ numproducts, products, minprice, maxprice }));
     } catch (error) {
         console.log(error);
         res.status(500).send(FormatError("Error occurred", res.statusCode));
@@ -106,3 +133,85 @@ exports.deleteProduct = async (req, res) => {
         res.status(500).send(FormatError("Error occurred", res.statusCode));
     }
 }
+
+exports.favProduct = async (req, res) => {
+    var productId = req.product._id;
+
+    User.findById(req.payload.id).then(function (user) {
+        if (!user) { return res.sendStatus(401); }
+
+        return user.favorite(productId).then(function () {
+            return req.product.updateFavoriteCount().then(function (product) {
+                return res.json({ product: product.toJSONfor(user) });
+            });
+        });
+    });
+}
+
+exports.unfavProduct = async (req, res) => {
+    var productId = req.product._id;
+
+    User.findById(req.payload.id).then(function (user) {
+        if (!user) { return res.sendStatus(401); }
+
+        return user.unfavorite(productId).then(function () {
+            return req.product.updateFavoriteCount().then(function (product) {
+                return res.json({ product: product.toJSONfor(user) });
+            });
+        });
+    });
+}
+
+exports.getComments = async (req, res) => {
+    Promise.resolve(req.payload ? User.findById(req.payload.id) : null).then(function (user) {
+        return req.product.populate({
+            path: 'comments',
+            populate: {
+                path: 'author'
+            },
+            options: {
+                sort: {
+                    createdAt: 'desc'
+                }
+            }
+        }).execPopulate().then(function (product) {
+            return res.json({
+                comments: req.product.comments.map(function (comment) {
+                    return comment.toJSONfor(user);
+                })
+            });
+        });
+    });
+}
+
+exports.addComment = async (req, res) => {
+    User.findById(req.payload.id).then(function (user) {
+        if (!user) { return res.sendStatus(401); }
+
+        var comment = new Comment(req.body.comment);
+        comment.product = req.product;
+        comment.author = user;
+
+        return comment.save().then(function () {
+            req.product.comments.push(comment);
+
+            return req.product.save().then(function (product) {
+                res.json({ comment: comment.toJSONfor(user) });
+            });
+        });
+    });
+}
+
+exports.removeComment = async (req, res) => {
+    if (req.comment.author.toString() === req.payload.id.toString()) {
+        req.product.comments.remove(req.comment._id);
+        req.product.save()
+            .then(Comment.find({ _id: req.comment._id }).remove().exec())
+            .then(function () {
+                res.sendStatus(204);
+            });
+    } else {
+        res.sendStatus(403);
+    }
+}
+

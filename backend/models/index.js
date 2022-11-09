@@ -1,3 +1,3 @@
+require('./user.js');
 require('./category.js');
 require('./product.js');
-require('./user.js');

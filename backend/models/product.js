@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
-const Category = require("../models/category");
+// const Category = require("../models/category");
 const uniqueValitador = require('mongoose-unique-validator');
 const slugf = require('slug');
+let User = mongoose.model('User');
 
 const ProductSchema = mongoose.Schema({
     slug: {
@@ -59,7 +60,17 @@ ProductSchema.methods.slugify = function () {
     this.slug = slugf(this.name) + "-" + (Math.random() * Math.pow(36, 6) | 0);
 };
 
-ProductSchema.methods.toJSONfor = function () {
+ProductSchema.methods.updateFavoriteCount = function () {
+    var product = this;
+
+    return User.count({ favorites: { $in: [product._id] } }).then(function (count) {
+        product.favoritesCount = count;
+
+        return product.save();
+    });
+};
+
+ProductSchema.methods.toJSONfor = function (user) {
     return {
         slug: this.slug,
         name: this.name,
@@ -68,6 +79,8 @@ ProductSchema.methods.toJSONfor = function () {
         photo: this.photo,
         category: this.category,
         categoryname: this.categoryname,
+        favorited: user ? user.isFavorite(this._id) : false,
+        favoritesCount: this.favoritesCount,
         price: this.price
     }
 }
