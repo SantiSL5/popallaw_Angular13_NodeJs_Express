@@ -94,10 +94,4 @@ export class UserService {
     return this.currentUserSubject.value;
   }
 
-  getIsAuthenticated(): any {
-    console.log(this.isAuthenticatedSubject);
-
-    return this.isAuthenticatedSubject.subscribe(data => { return data});
-  }
-
 }

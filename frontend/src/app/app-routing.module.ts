@@ -10,8 +10,7 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
-    // canActivate: [NoAuthGuard]
-
+    canActivate: [NoAuthGuard]
   },
   {
     path: 'profile',

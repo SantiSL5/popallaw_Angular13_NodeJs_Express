@@ -6,7 +6,7 @@ import { UserService } from '../services/user.service';
 import { map, take } from 'rxjs/operators';
 
 @Injectable()
-export class NoAuthGuard implements CanActivate {
+export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,
     private userService: UserService
@@ -18,11 +18,10 @@ export class NoAuthGuard implements CanActivate {
   ): Observable<boolean> {
     this.userService.isAuthenticated.subscribe(isAuth => {
       if (isAuth) {
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/login');
       }
     })
-
-    return this.userService.isAuthenticated.pipe(take(1), map(isAuth => !isAuth));
+    return this.userService.isAuthenticated.pipe(take(1), map(isAuth => isAuth));
 
   }
 }
