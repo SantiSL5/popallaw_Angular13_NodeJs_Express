@@ -5,3 +5,22 @@ nav {
 .nav-item {
     margin: auto;
 }
+
+.userNav {
+    display: flex;
+}
+
+.logOut {
+    background-color: transparent;
+    color: white;
+    margin-left: 10px;
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.logOut:hover {
+    background: white;
+    color: #262626;
+    text-decoration: none;
+}

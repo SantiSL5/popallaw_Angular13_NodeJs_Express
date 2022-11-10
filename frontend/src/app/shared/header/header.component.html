@@ -13,9 +13,9 @@
       <li class="nav-item">
         <app-search></app-search>
       </li>
-      <li *appShowAuthed="true" class="nav-item">
+      <li *appShowAuthed="true" class="nav-item userNav">
         <a routerLink="/login/" class="nav-link">{{ currentUser.username }}</a>
-        <button (click)="logOut()">Log out</button>
+        <button class="logOut" (click)="logOut()">Log out</button>
       </li>
       <li *appShowAuthed="false" class="nav-item">
         <a routerLink="/login/" class="nav-link">LOGIN</a>
