@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ApiService } from './api.service';
-import { Profile } from '../models/profile.model';
+import { Profile } from '../models/profile';
 import { map } from 'rxjs/operators';
 
 @Injectable({
