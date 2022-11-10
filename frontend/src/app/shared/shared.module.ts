@@ -16,6 +16,7 @@ import { FiltersComponent } from './filters/filters.component';
 import { SearchComponent } from './search/search.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { ShowAuthedDirective } from './show-authed.directive'
+import { CommentsComponent } from './comments/comments.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { ShowAuthedDirective } from './show-authed.directive'
     PaginationComponent,
     FiltersComponent,
     SearchComponent,
-    ShowAuthedDirective
+    ShowAuthedDirective,
+    CommentsComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +49,8 @@ import { ShowAuthedDirective } from './show-authed.directive'
     DetailsProductComponent,
     PaginationComponent,
     FiltersComponent,
-    SearchComponent
+    SearchComponent,
+    CommentsComponent
   ]
 })
 export class SharedModule { }
