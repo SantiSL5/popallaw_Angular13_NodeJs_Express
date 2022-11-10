@@ -8,12 +8,12 @@ nav {
 
 .userNav {
     display: flex;
+    margin-left: 20px;
 }
 
 .logOut {
     background-color: transparent;
     color: white;
-    margin-left: 10px;
     border: 1px solid white;
     border-radius: 10px;
     padding: 5px;
