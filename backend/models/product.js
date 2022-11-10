@@ -33,7 +33,9 @@ const ProductSchema = mongoose.Schema({
     price: {
         type: Number,
         required: true
-    }
+    },
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+    author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 }, {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
@@ -70,7 +72,7 @@ ProductSchema.methods.updateFavoriteCount = function () {
     });
 };
 
-ProductSchema.methods.toJSONfor = function (user) {
+ProductSchema.methods.toJSONFor = function (user) {
     return {
         slug: this.slug,
         name: this.name,
@@ -81,7 +83,8 @@ ProductSchema.methods.toJSONfor = function (user) {
         categoryname: this.categoryname,
         favorited: user ? user.isFavorite(this._id) : false,
         favoritesCount: this.favoritesCount,
-        price: this.price
+        price: this.price,
+        author: this.author.toProfileJSONFor(user)
     }
 }
 

@@ -32,7 +32,7 @@ CategorySchema.methods.slugify = function () {
     this.slug = slugf(this.name) + '-' + (Math.random() * Math.pow(36, 6) | 0);
 };
 
-CategorySchema.methods.toJSONfor = function (category) {
+CategorySchema.methods.toJSONFor = function (category) {
     return {
         slug: category.slug,
         name: category.name,

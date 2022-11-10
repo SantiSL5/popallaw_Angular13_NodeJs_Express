@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
 const User = mongoose.model('User');
+const Comment = mongoose.model('Comment');
 const slugf = require('slug');
 const FormatSuccess = require('../utils/responseApi.js').FormatSuccess;
 const FormatError = require('../utils/responseApi.js').FormatError;
@@ -8,7 +9,7 @@ const FormatObject = require('../utils/responseApi.js').FormatObject;
 
 exports.paramsProduct = async (req, res, next, slug) => {
     Product.findOne({ "slug": slug })
-        // .populate('categoryname')
+        // .populate('author')
         .then(function (product) {
             if (!product) { return res.sendStatus(404); }
 
@@ -18,7 +19,7 @@ exports.paramsProduct = async (req, res, next, slug) => {
         });
 }
 
-exports.paramsComment = async (req, res, next, username) => {
+exports.paramsComment = async (req, res, next, id) => {
     Comment.findById(id).then(function (comment) {
         if (!comment) { return res.sendStatus(404); }
 
@@ -142,7 +143,7 @@ exports.favProduct = async (req, res) => {
 
         return user.favorite(productId).then(function () {
             return req.product.updateFavoriteCount().then(function (product) {
-                return res.json({ product: product.toJSONfor(user) });
+                return res.json({ product: product.toJSONFor(user) });
             });
         });
     });
@@ -156,7 +157,7 @@ exports.unfavProduct = async (req, res) => {
 
         return user.unfavorite(productId).then(function () {
             return req.product.updateFavoriteCount().then(function (product) {
-                return res.json({ product: product.toJSONfor(user) });
+                return res.json({ product: product.toJSONFor(user) });
             });
         });
     });
@@ -174,13 +175,15 @@ exports.getComments = async (req, res) => {
                     createdAt: 'desc'
                 }
             }
-        }).execPopulate().then(function (product) {
-            return res.json({
-                comments: req.product.comments.map(function (comment) {
-                    return comment.toJSONfor(user);
-                })
+        })
+            // .execPopulate()
+            .then(function (product) {
+                return res.json({
+                    comments: req.product.comments.map(function (comment) {
+                        return comment.toJSONFor(user);
+                    })
+                });
             });
-        });
     });
 }
 
@@ -188,15 +191,16 @@ exports.addComment = async (req, res) => {
     User.findById(req.payload.id).then(function (user) {
         if (!user) { return res.sendStatus(401); }
 
-        var comment = new Comment(req.body.comment);
+        var comment = new Comment();
         comment.product = req.product;
         comment.author = user;
+        comment.body = req.body.body;
 
         return comment.save().then(function () {
             req.product.comments.push(comment);
 
             return req.product.save().then(function (product) {
-                res.json({ comment: comment.toJSONfor(user) });
+                res.json({ comment: comment.toJSONFor(user) });
             });
         });
     });
@@ -206,7 +210,7 @@ exports.removeComment = async (req, res) => {
     if (req.comment.author.toString() === req.payload.id.toString()) {
         req.product.comments.remove(req.comment._id);
         req.product.save()
-            .then(Comment.find({ _id: req.comment._id }).remove().exec())
+            .then(Comment.findOneAndRemove({ _id: req.comment._id }))
             .then(function () {
                 res.sendStatus(204);
             });
