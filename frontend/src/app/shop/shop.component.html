@@ -1,4 +1,4 @@
 <main>
     <app-list-products *ngIf="view === 'list'" (shDetails)="showDetails($event)"></app-list-products>
-    <app-details-product *ngIf="view === 'details'" [slug]="slug"></app-details-product>
+    <app-details-product *ngIf="view === 'details'" [slug]="slug" (shShop)="showShop()"></app-details-product>
 </main>

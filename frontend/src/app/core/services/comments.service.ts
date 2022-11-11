@@ -23,8 +23,7 @@ export class CommentsService {
   }
 
   getAll(slug: string): Observable<Comment[]> {
-    return this.apiService.get(`/articles/${slug}/comments`)
-      .pipe(map(data => data.comments));
+    return this.apiService.get(`/product/${slug}/comment`);
   }
 
   destroy(commentId: string, articleSlug: string) {

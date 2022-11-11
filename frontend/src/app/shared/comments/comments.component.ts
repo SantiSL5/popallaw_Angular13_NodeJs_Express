@@ -7,9 +7,9 @@ import { Subscription } from 'rxjs';
   selector: 'app-comments',
   templateUrl: './comments.component.html',
   styleUrls: ['./comments.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CommentsComponent implements OnInit, OnDestroy {
+export class CommentsComponent implements OnInit {
   constructor(
     private _commentsService: CommentsService,
     private cd: ChangeDetectorRef,
@@ -18,12 +18,15 @@ export class CommentsComponent implements OnInit, OnDestroy {
 
   private subscription!: Subscription
 
-  comment!: Comment;
-  @Output() deleteComment = new EventEmitter<boolean>();
+  listComments: Comment[] = [];
+  comments: any;
+  loaded: boolean = false;
+  @Input() slug: string = "";
 
   canModify!: boolean;
 
   ngOnInit() {
+    this.loadComments(this.slug);
     // Load the current user's data
     // this.subscription = this._userService.currentUser.subscribe(
     //   (userData: User) => {
@@ -35,17 +38,19 @@ export class CommentsComponent implements OnInit, OnDestroy {
   }
 
   loadComments(slug: string) {
+
     this._commentsService.getAll(slug).subscribe(data => {
-      this.comment = data;
+      this.comments = data;
+      this.listComments = this.comments.comments;
     });
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+  // ngOnDestroy() {
+  //   this.subscription.unsubscribe();
+  // }
 
   deleteClicked() {
-    this.deleteComment.emit(true);
+    // this.deleteComment.emit(true);
   }
 
 }

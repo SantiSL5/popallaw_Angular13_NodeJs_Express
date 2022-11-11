@@ -1,5 +1,5 @@
 div {
-    background-color: #ffffff
+    /* background-color: #ffffff */
 }
 
 .wrapper {
@@ -17,6 +17,8 @@ div {
     flex-wrap: nowrap;
     height: 100%;
     width: 327px;
+    background-color: #ffffff;
+    border-right: 2px solid rgba(128, 128, 128, 0.274);
 }
 
 .product-img img {
@@ -149,5 +151,5 @@ button:hover {
 }
 
 .return {
-    align-self:center;
+    align-self: center;
 }

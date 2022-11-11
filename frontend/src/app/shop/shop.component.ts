@@ -15,9 +15,9 @@ export class ShopComponent implements OnInit {
     limit: 6,
     offset: 0
   };
-  
 
-  constructor(  private _productService: ProductService) { }
+
+  constructor(private _productService: ProductService) { }
 
   ngOnInit(): void {
   }
@@ -25,6 +25,10 @@ export class ShopComponent implements OnInit {
   showDetails(slug: string) {
     this.slug = slug;
     this.view = "details";
+  }
+
+  showShop() {
+    this.view = "list";
   }
 
 }

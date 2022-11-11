@@ -1,3 +1,4 @@
+<p (click)="returnShop()">Return to shop</p>
 <div>
   <div class="wrapper">
     <div class="product-img">
@@ -20,4 +21,4 @@
     </div>
   </div>
 </div>
-<app-comments></app-comments>
+<app-comments [slug]="product.slug"></app-comments>

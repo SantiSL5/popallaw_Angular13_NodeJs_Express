@@ -10,6 +10,7 @@ import { ProductService } from 'src/app/core/services/product.service';
 export class DetailsProductComponent implements OnInit {
 
   @Input() slug = '';
+  @Output() shShop = new EventEmitter();
   product!: Product;
 
   constructor(
@@ -24,5 +25,9 @@ export class DetailsProductComponent implements OnInit {
     this._productService.get(slug).subscribe(data => {
       this.product = data;
     });
+  }
+
+  returnShop() {
+    this.shShop.emit();
   }
 }

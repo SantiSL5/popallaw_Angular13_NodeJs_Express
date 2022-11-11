@@ -39,7 +39,7 @@ exports.register = async (req, res, next) => {
     user.username = req.body.username;
     user.email = req.body.email;
     user.setPassword(req.body.password);
-    user.image = 'profile.png';
+    user.image = 'https://static.productionready.io/images/smiley-cyrus.jpg';
     user.bio = 'Hello, this is my profile.';
 
     user.save().then(function () {
