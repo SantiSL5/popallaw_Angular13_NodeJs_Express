@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { Product } from 'src/app/core/models/product';
 import { ProductService } from 'src/app/core/services/product.service';
 
@@ -15,6 +16,7 @@ export class DetailsProductComponent implements OnInit {
 
   constructor(
     private _productService: ProductService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -29,5 +31,7 @@ export class DetailsProductComponent implements OnInit {
 
   returnShop() {
     this.shShop.emit();
+    this.router.navigateByUrl('/shop');
+
   }
 }

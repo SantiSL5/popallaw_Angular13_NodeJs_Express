@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Filters } from '../core/models/filters';
 import { ProductService } from '../core/services/product.service';
 
@@ -17,12 +18,16 @@ export class ShopComponent implements OnInit {
   };
 
 
-  constructor(private _productService: ProductService) { }
+  constructor(
+    private _productService: ProductService,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
+    this.checkView();
   }
 
-  showDetails(slug: string) {
+  showDetails(slug: any) {
     this.slug = slug;
     this.view = "details";
   }
@@ -30,5 +35,14 @@ export class ShopComponent implements OnInit {
   showShop() {
     this.view = "list";
   }
+
+  checkView() {
+    if (this.route.snapshot.paramMap.get("slug")) {
+      this.showDetails(this.route.snapshot.paramMap.get("slug"));
+    } else {
+      this.showShop();
+    }
+  }
+
 
 }

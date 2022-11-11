@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Product } from 'src/app/core/models/product';
 import { Filters } from 'src/app/core/models/filters';
 import { ProductService } from 'src/app/core/services/product.service';
@@ -16,7 +17,7 @@ import { Subject } from 'rxjs';
 
 export class ListProductsComponent implements OnInit {
   @Output() shDetails = new EventEmitter<string>();
-  products:any;
+  products: any;
   listProducts: Product[] = [];
   detailedProduct!: Product;
   productCount!: number;
@@ -26,14 +27,15 @@ export class ListProductsComponent implements OnInit {
     limit: 6,
     offset: 0
   };
-  minValue=0;
-  maxValue=0;
+  minValue = 0;
+  maxValue = 0;
   urlParams: any = [];
 
   constructor(
     private _productService: ProductService,
     private toastrService: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -43,7 +45,7 @@ export class ListProductsComponent implements OnInit {
   }
 
   getAllProducts(): void {
-    this.products=this._productService.getProducts();
+    this.products = this._productService.getProducts();
     if (this.products.numproducts == 0) {
       this.isProducts = false;
     } else {
@@ -58,6 +60,8 @@ export class ListProductsComponent implements OnInit {
 
   showDetails(value: string) {
     this.shDetails.emit(value);
+
+    this.router.navigateByUrl('/shop/item/' + value);
   }
 
   loadPage() {
