@@ -8,7 +8,6 @@ import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule } 
   selector: 'app-comments',
   templateUrl: './comments.component.html',
   styleUrls: ['./comments.component.css'],
-  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommentsComponent implements OnInit {
   newComment!: FormGroup;

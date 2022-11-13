@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable ,  BehaviorSubject ,  ReplaySubject } from 'rxjs';
+import { Observable, BehaviorSubject, ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApiService } from './api.service';
 import { Product } from '../models/product';
@@ -40,19 +40,19 @@ export class ProductService {
     return this.filtersSubject.value;
   }
 
-  async setFilters(filters: Filters, call:string="undefined") {
-    this.filtersServ=this.getFilters();
-    if (call=="category") {
-      filters.priceMin=undefined;
-      filters.priceMax=undefined;
-      this.filtersSubject.next({...this.filtersSubject.value, ...filters});
-    }else if (call=="category") {
-      filters.priceMin=undefined;
-      filters.priceMax=undefined;
-      this.filtersSubject.next({...this.filtersSubject.value, ...filters});
-    }else{
-      filters.priceMin=this.getProducts().minprice;
-      filters.priceMax=this.getProducts().maxprice;
+  async setFilters(filters: Filters, call: string = "undefined") {
+    this.filtersServ = this.getFilters();
+    if (call == "category") {
+      filters.priceMin = undefined;
+      filters.priceMax = undefined;
+      this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
+    } else if (call == "category") {
+      filters.priceMin = undefined;
+      filters.priceMax = undefined;
+      this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
+    } else {
+      filters.priceMin = this.getProducts().minprice;
+      filters.priceMax = this.getProducts().maxprice;
       this.filtersSubject.next(filters);
     }
     await this.refreshProducts();
@@ -95,7 +95,16 @@ export class ProductService {
     return this.apiService.post('/product/', product);
   }
 
-  put(slug: string, product: Product): Observable<Product> {
+  put(slug: string, product: Product): Observable<any> {
     return this.apiService.put('/product/' + slug, product);
   }
+
+  favProduct(slug: string): Observable<any> {
+    return this.apiService.post('/product/' + slug + '/fav');
+  }
+
+  unfavProduct(slug: string): Observable<Product> {
+    return this.apiService.delete('/product/' + slug + '/fav');
+  }
+
 }

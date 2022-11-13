@@ -5,8 +5,8 @@
       <div class="row">
         <h1 [hidden]="isProducts">No se han encontrado resultados</h1>
         <div [hidden]="!isProducts" class="el-wrapper">
-          <div class="card" *ngFor="let product of listProducts" (click)="showDetails(product.slug)">
-            <div class="box-up">
+          <div class="card" *ngFor="let product of listProducts; index as i">
+            <div class="box-up"  (click)="showDetails(product.slug)">
               <img class="img" src="../../../assets/img/{{product.photo}}" alt="">
               <div class="img-info">
                 <div class="info-inner">
@@ -26,6 +26,11 @@
                   <span class="txt">Buy</span>
                 </span>
               </a>
+            </div>
+            <div class="favorite">
+              <div class="heart" *ngIf="product.favorited === true"><img src="../../../assets/heart-solid.svg" alt="" (click)="toggleFav(product.slug, 'unfav', i)"></div>
+              <div class="heart" *ngIf="product.favorited === false"><img src="../../../assets/heart-regular.svg" alt="" (click)="toggleFav(product.slug, 'fav', i)"></div>
+              <p class="favoritedCount">{{product.favoritesCount}}</p>
             </div>
           </div>
         </div>

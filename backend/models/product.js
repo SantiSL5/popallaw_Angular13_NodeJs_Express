@@ -34,8 +34,19 @@ const ProductSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
-    author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    favoritesCount: {
+        type: Number,
+        default: 0
+    },
+    favorited: {
+        type: Boolean,
+        default: false
+    },
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment'
+    }],
+    // author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 }, {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
@@ -84,7 +95,7 @@ ProductSchema.methods.toJSONFor = function (user) {
         favorited: user ? user.isFavorite(this._id) : false,
         favoritesCount: this.favoritesCount,
         price: this.price,
-        author: this.author.toProfileJSONFor(user)
+        // author: this.author.toProfileJSONFor(user)
     }
 }
 

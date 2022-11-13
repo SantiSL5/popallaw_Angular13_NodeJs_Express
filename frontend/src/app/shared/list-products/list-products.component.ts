@@ -79,4 +79,16 @@ export class ListProductsComponent implements OnInit {
       });
   }
 
+  toggleFav(slug: string, operation: string, i: number) {
+    if (operation == "fav") {
+      this.listProducts[i].favorited = true;
+      this.listProducts[i].favoritesCount++;
+      this._productService.favProduct(slug).subscribe();
+    } else {
+      this.listProducts[i].favorited = false;
+      this.listProducts[i].favoritesCount--;
+      this._productService.unfavProduct(slug).subscribe();
+    }
+  }
+
 }

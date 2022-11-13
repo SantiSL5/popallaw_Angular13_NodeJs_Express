@@ -8,8 +8,8 @@ router.param('product', productController.paramsProduct);
 router.param('comment', productController.paramsComment);
 
 router.post('/', productController.createProduct);
-router.get('/', productController.getProducts);
-router.get('/:slug', productController.getProduct);
+router.get('/', auth.optional, productController.getProducts);
+router.get('/:slug', auth.optional, productController.getProduct);
 router.put('/:slug', productController.updateProduct);
 router.delete('/:slug', productController.deleteProduct);
 

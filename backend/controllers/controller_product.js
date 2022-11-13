@@ -50,9 +50,20 @@ exports.getProducts = async (req, res) => {
         }
         limit = Number(req.query.limit);
         offset = Number(req.query.offset);
-        const products = await Product.find(queryfind).populate('categoryname').limit(limit).skip(offset);
+        let products = await Product.find(queryfind).populate('categoryname').limit(limit).skip(offset);
         const numproducts = await Product.find(queryfind).populate('categoryname').count();
+
         if (products.length > 0) {
+            
+            if (req.payload) {
+                User.findById(req.payload.id).then(function (user) {
+                    products = products.map(function (arrayProduct) {
+                        return arrayProduct.toJSONFor(user);
+                    });
+                });
+
+            }
+
             queryfind = {};
             if (req.query.category != 'undefined' && req.query.category != undefined) queryfind.category = req.query.category;
             if (req.query.name != 'undefined' && req.query.name != undefined) queryfind.name = new RegExp('.*' + req.query.name + '*.', "i");
@@ -76,11 +87,29 @@ exports.getProducts = async (req, res) => {
             const prices = await Product.aggregate(pipeline);
             minprice = prices[0].lowestPrice;
             maxprice = prices[0].highestPrice;
+
+
         } else {
             minprice = 0;
             maxprice = 0;
         }
-        res.json(FormatObject({ numproducts, products, minprice, maxprice }));
+
+        if (req.payload) {
+            // User.findById(req.payload.id).then(function (user) {
+            //     res.json(FormatObject({
+            //         numproducts,
+            //         products: products.map(function (product) {
+            //             return products.toJSONFor(user);
+            //         }),
+            //         minprice,
+            //         maxprice
+            //     }));
+            // });
+            res.json(FormatObject({ numproducts, products, minprice, maxprice }));
+
+        } else {
+            res.json(FormatObject({ numproducts, products, minprice, maxprice }));
+        }
     } catch (error) {
         console.log(error);
         res.status(500).send(FormatError("Error occurred", res.statusCode));

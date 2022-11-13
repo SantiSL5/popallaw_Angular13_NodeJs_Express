@@ -14,14 +14,6 @@ export class CommentsService {
     private apiService: ApiService
   ) { }
 
-  // add(slug: string, payload: string): Observable<Comment> {
-  //   return this.apiService
-  //     .post(
-  //       `/articles/${slug}/comments`,
-  //       { comment: { body: payload } }
-  //     ).pipe(map(data => data.comment));
-  // }
-
   getAll(slug: string): Observable<Comment[]> {
     return this.apiService.get(`/product/${slug}/comment`);
   }
