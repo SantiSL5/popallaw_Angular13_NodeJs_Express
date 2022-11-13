@@ -18,7 +18,7 @@ router.delete('/:product/fav', auth.required, productController.unfavProduct);
 
 router.get('/:product/comment', auth.optional, productController.getComments);
 router.post('/:product/comment', auth.required, productController.addComment);
-router.delete('/:product/comments/:comment', auth.required, productController.removeComment);
+router.delete('/:product/comment/:comment', auth.required, productController.removeComment);
 
 
 module.exports = router;

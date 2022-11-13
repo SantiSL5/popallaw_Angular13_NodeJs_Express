@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, Output, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Comment, User } from '../../core';
-import { CommentsService } from '../../core/services';
+import { CommentsService, UserService } from '../../core/services';
 import { Subscription } from 'rxjs';
+import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-comments',
@@ -10,11 +11,19 @@ import { Subscription } from 'rxjs';
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommentsComponent implements OnInit {
+  newComment!: FormGroup;
+
   constructor(
+    private fb: FormBuilder,
+    private _userService: UserService,
     private _commentsService: CommentsService,
     private cd: ChangeDetectorRef,
 
-  ) { }
+  ) {
+    this.newComment = this.fb.group({
+      body: ['', [Validators.required, Validators.minLength(5)]],
+    });
+  }
 
   private subscription!: Subscription
 
@@ -23,34 +32,38 @@ export class CommentsComponent implements OnInit {
   loaded: boolean = false;
   @Input() slug: string = "";
 
-  canModify!: boolean;
+  user!: string;
 
   ngOnInit() {
-    this.loadComments(this.slug);
+    if (this.slug) {
+      this.loadComments();
+    }
     // Load the current user's data
-    // this.subscription = this._userService.currentUser.subscribe(
-    //   (userData: User) => {
-    //     console.log(userData);
-
-    //     this.canModify = (userData.username === this.comment.author.username);
-    //   }
-    // );
+    this.subscription = this._userService.currentUser.subscribe(
+      (userData: User) => {
+        this.user = userData.username;
+      }
+    );
   }
 
-  loadComments(slug: string) {
-
-    this._commentsService.getAll(slug).subscribe(data => {
+  loadComments() {
+    this._commentsService.getAll(this.slug).subscribe(data => {
       this.comments = data;
       this.listComments = this.comments.comments;
     });
   }
 
-  // ngOnDestroy() {
-  //   this.subscription.unsubscribe();
-  // }
+  addComment() {
+    this._commentsService.add(this.slug, this.newComment.value).subscribe(data => {
+      this.loadComments();
+    });
+  }
 
-  deleteClicked() {
-    // this.deleteComment.emit(true);
+  deleteComment(commentId: any) {
+    this._commentsService.delete(this.slug, commentId).subscribe(data => {
+      this.loadComments();
+    });
+
   }
 
 }

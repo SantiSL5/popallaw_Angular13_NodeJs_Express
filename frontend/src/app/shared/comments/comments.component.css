@@ -6,7 +6,12 @@
     width: 50px;
 }
 
-.card-block{
+.card-block {
     margin-bottom: 7px;
     margin-top: 3px;
+}
+
+.red {
+    color: red;
+    margin-bottom: -5px;
 }
