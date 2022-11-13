@@ -32,6 +32,18 @@ export class DetailsProductComponent implements OnInit {
   returnShop() {
     this.shShop.emit();
     this.router.navigateByUrl('/shop');
-
   }
+
+  toggleFav(slug: string, operation: string) {
+    if (operation == "fav") {
+      this.product.favorited = true;
+      this.product.favoritesCount++;
+      this._productService.favProduct(slug).subscribe();
+    } else {
+      this.product.favorited = false;
+      this.product.favoritesCount--;
+      this._productService.unfavProduct(slug).subscribe();
+    }
+  }
+
 }

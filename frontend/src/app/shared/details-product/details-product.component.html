@@ -6,6 +6,11 @@
       <!-- <p class="ubication">Ubicación: {{product.ubication}}</p> -->
       <!-- <p class="state"> Estado: {{product.status}}</p> -->
       <!-- <button class="return" type="button" [routerLink]="['/shop']">return</button> -->
+      <div class="favorite">
+        <div class="heart" *ngIf="product.favorited === true"><img src="../../../assets/heart-solid.svg" alt="" (click)="toggleFav(product.slug, 'unfav')"></div>
+        <div class="heart" *ngIf="product.favorited === false"><img src="../../../assets/heart-regular.svg" alt="" (click)="toggleFav(product.slug, 'fav')"></div>
+        <p class="favoritedCount">{{product.favoritesCount}}</p>
+      </div>
     </div>
     <div class="product-info">
       <div class="product-text">

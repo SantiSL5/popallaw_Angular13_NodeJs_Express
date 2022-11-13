@@ -54,7 +54,7 @@ exports.getProducts = async (req, res) => {
         const numproducts = await Product.find(queryfind).populate('categoryname').count();
 
         if (products.length > 0) {
-            
+
             if (req.payload) {
                 User.findById(req.payload.id).then(function (user) {
                     products = products.map(function (arrayProduct) {
@@ -94,22 +94,8 @@ exports.getProducts = async (req, res) => {
             maxprice = 0;
         }
 
-        if (req.payload) {
-            // User.findById(req.payload.id).then(function (user) {
-            //     res.json(FormatObject({
-            //         numproducts,
-            //         products: products.map(function (product) {
-            //             return products.toJSONFor(user);
-            //         }),
-            //         minprice,
-            //         maxprice
-            //     }));
-            // });
-            res.json(FormatObject({ numproducts, products, minprice, maxprice }));
+        res.json(FormatObject({ numproducts, products, minprice, maxprice }));
 
-        } else {
-            res.json(FormatObject({ numproducts, products, minprice, maxprice }));
-        }
     } catch (error) {
         console.log(error);
         res.status(500).send(FormatError("Error occurred", res.statusCode));
@@ -118,8 +104,14 @@ exports.getProducts = async (req, res) => {
 
 exports.getProduct = async (req, res) => {
     try {
-        const product = await Product.findOne({ "slug": req.params.slug }).populate('categoryname');;
-        res.json(FormatObject(product));
+        let product = await Product.findOne({ "slug": req.params.slug }).populate('categoryname');
+        if (req.payload) {
+            User.findById(req.payload.id).then(function (user) {
+                product = product.toJSONFor(user);
+                res.json(FormatObject(product));
+            });
+        }
+
     } catch (error) {
         console.log(error);
         res.status(500).send(FormatError("Error occurred", res.statusCode));
