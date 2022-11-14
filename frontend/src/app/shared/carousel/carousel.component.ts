@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Category } from 'src/app/core/models/category';
 import { CategoryService } from 'src/app/core/services/category.service';
 
@@ -8,11 +9,14 @@ import { CategoryService } from 'src/app/core/services/category.service';
   styleUrls: ['./carousel.component.css']
 })
 export class CarouselComponent implements OnInit {
-  @ViewChild('carousel', {static: false}) carousel: any;
+  @ViewChild('carousel', { static: false }) carousel: any;
 
   listCategories: Category[] = [];
 
-  constructor(private _categoryService: CategoryService) {}
+  constructor(
+    private _categoryService: CategoryService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
     this.getAllCategories();
@@ -24,5 +28,11 @@ export class CarouselComponent implements OnInit {
     });
   }
 
+  goShop(slug: string) {
+    this.router.navigate(
+      ['/shop'],
+      { queryParams: { category: btoa(slug) } }
+    );
+  }
 
 }

@@ -2,8 +2,7 @@
     <div class="page-inner">
         <div class="row">
             <div class="el-wrapper">
-                <div class="card" *ngFor="let category of listCategories" [routerLink]="['/shop']"
-                    [queryParams]="{category: category.slug}">
+                <div class="card" *ngFor="let category of listCategories" (click)="goShop(category.slug)">
                     <div class="box-up">
                         <img class="img" src="../../../assets/img/{{category.photo}}" alt="">
                         <div class="img-info">

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Category } from 'src/app/core/models/category';
 import { CategoryService } from 'src/app/core/services/category.service';
 
@@ -13,7 +14,10 @@ export class InfiniteScrollComponent implements OnInit {
   limit: number = 2;
   offset: number = 0;
 
-  constructor(private _categoryService: CategoryService) { }
+  constructor(
+    private _categoryService: CategoryService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
     this.getScroll();
@@ -28,6 +32,13 @@ export class InfiniteScrollComponent implements OnInit {
   onScrollDown() {
     this.offset = this.offset + 2;
     this.getScroll();
+  }
+
+  goShop(slug: string) {
+    this.router.navigate(
+      ['/shop'],
+      { queryParams: { category: btoa(slug) } }
+    );
   }
 
 }

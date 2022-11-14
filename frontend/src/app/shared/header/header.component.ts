@@ -30,8 +30,7 @@ export class HeaderComponent implements OnInit {
 
   logOut() {
     this._userService.purgeAuth();
-    this.router.navigateByUrl('/');
-    location.reload;
+    window.location.reload();
   }
 
 }
