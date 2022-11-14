@@ -56,7 +56,7 @@ exports.getProducts = async (req, res) => {
         if (products.length > 0) {
 
             if (req.payload) {
-                User.findById(req.payload.id).then(function (user) {
+                await User.findById(req.payload.id).then(function (user) {
                     products = products.map(function (arrayProduct) {
                         return arrayProduct.toJSONFor(user);
                     });

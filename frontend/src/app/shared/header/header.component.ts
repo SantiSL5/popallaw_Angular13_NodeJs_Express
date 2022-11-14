@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from 'src/app/core/models/user';
 import { UserService } from 'src/app/core/services/user.service';
 
@@ -12,8 +13,9 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private _userService: UserService,
-    private cd: ChangeDetectorRef
-  ) {}
+    private cd: ChangeDetectorRef,
+    private router: Router,
+  ) { }
 
   currentUser!: User;
 
@@ -28,6 +30,8 @@ export class HeaderComponent implements OnInit {
 
   logOut() {
     this._userService.purgeAuth();
+    this.router.navigateByUrl('/');
+    location.reload;
   }
 
 }

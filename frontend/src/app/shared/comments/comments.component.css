@@ -10,7 +10,9 @@
     margin-bottom: 7px;
     margin-top: 3px;
 }
-
+.add-comment{
+    max-width: 100%;
+}
 .red {
     color: red;
     margin-bottom: -5px;
