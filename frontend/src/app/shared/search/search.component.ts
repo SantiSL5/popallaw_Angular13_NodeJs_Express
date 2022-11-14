@@ -35,6 +35,7 @@ export class SearchComponent implements OnInit {
         }
         this.filters.name=data.search;
         this._productService.setFilters(this.filters,"search");
+
         this.router.navigate(
             ['/shop']
         );
@@ -52,9 +53,11 @@ export class SearchComponent implements OnInit {
         }
         this.filters.name=this.name.nativeElement.value;
         this._productService.setFilters(this.filters,"search");
-        this.router.navigate(
-          ['/shop']
-        );
+        setTimeout(()=>{
+          this.router.navigate(
+            ['/shop']
+          );
+        }, 30) ;
       });
     }else {
       this.name.nativeElement.value=""

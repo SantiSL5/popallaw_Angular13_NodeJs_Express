@@ -44,7 +44,9 @@ export class ListProductsComponent implements OnInit {
   ngOnInit(): void {
     this.filters = this.defaultFilters;
     this.getUrl();
-    this.getAllProducts();
+    setTimeout(()=>{
+      this.getAllProducts();
+    }, 50) ;
     this.listConfig= {
       limit:6,
       offset:0,
@@ -52,7 +54,7 @@ export class ListProductsComponent implements OnInit {
     }
   }
 
-  getAllProducts(): void {
+  public getAllProducts(): void {
     this.products = this._productService.getProducts();
     if (this.products.numproducts == 0) {
       this.isProducts = false;

@@ -43,24 +43,31 @@ export class ProductService {
   async setFilters(filters: Filters, call: string = "undefined") {
     this.filtersServ = this.getFilters();
     if (call == "category") {
+      filters.offset=0;
       filters.priceMin = undefined;
       filters.priceMax = undefined;
       this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
     } else if (call == "slider") {
+      filters.offset=0;
       this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
     } else if (call == "pagination") {
       this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
-    } else if (call == "clear") {
-      filters= {
-        limit:6,
-        offset:0
+    } else if (call == "search") {
+      filters.offset=0;
+      if (filters.priceMin == 0 && filters.priceMax == 0) {
+        filters.priceMax=undefined;
+        filters.priceMin=undefined;
       }
+      this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
+    }else if (call == "clear") {
+      filters= new Filters;
+      filters.offset=0;
+      filters.limit=6;
       this.filtersSubject.next(filters);
     } else {
-      filters.priceMin = this.getProducts().minprice;
-      filters.priceMax = this.getProducts().maxprice;
-      this.filtersSubject.next(filters);
+      this.filtersSubject.next(this.defaultFilters);
     }
+    console.log(filters);
     await this.refreshProducts();
   }
 

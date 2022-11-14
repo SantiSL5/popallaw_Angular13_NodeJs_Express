@@ -28,14 +28,32 @@ export class FiltersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.maxValue= this._productService.getProducts().maxprice;
-    this.minValue= this._productService.getProducts().minprice;
+    this.getAllCategories();
+    this.filters=this._productService.getFilters();
+    if (this.filters.priceMax==undefined) {
+      this.maxValue=this._productService.getProducts().maxprice;
+    }else {
+      this.maxValue=this.filters.priceMax;
+    }
+    if (this.filters.priceMin==undefined) {
+      this.maxValue=this._productService.getProducts().minprice;
+    }else {
+      this.minValue=this.filters.priceMin;
+    }
     this.options= {
       floor: this.minValue,
       ceil: this.maxValue,
     };
     this.setOptions();
-    this.getAllCategories();
+
+    setTimeout(()=>{
+      if (this.filters.category==undefined) {
+        this.selectedValue=''
+      }else {
+        this.selectedValue=this.filters.category
+      }
+    }, 50);
+
   }
 
   getAllCategories(): void {
@@ -72,6 +90,10 @@ export class FiltersComponent implements OnInit {
       await setTimeout(()=>{
         this.filtersChange.emit();
       }, 80);
+    }else {
+      await setTimeout(()=>{
+        this.filtersChange.emit();
+      }, 50);
     }
 
   }

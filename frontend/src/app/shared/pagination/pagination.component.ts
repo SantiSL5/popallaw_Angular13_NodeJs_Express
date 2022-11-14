@@ -10,7 +10,7 @@ import { PaginationConfig } from 'src/app/core';
   styleUrls: ['./pagination.component.css']
 })
 
-export class PaginationComponent {
+export class PaginationComponent implements OnInit {
 
   numpages: number = 0;
   pages: number[] = [];
@@ -32,6 +32,12 @@ export class PaginationComponent {
   constructor(
     private _productService: ProductService,
   ) { }
+  ngOnInit(): void {
+    this.filters=this._productService.getFilters();
+    if (this.filters.offset==0) {
+      this.setPageTo(1)
+    }
+  }
 
   setNumPages(count: number): void {
     this.numpages = Math.ceil(count / 6);
@@ -43,20 +49,20 @@ export class PaginationComponent {
   }
 
   async setPageTo(pageNumber: number) {
-
-    this._productService.setFilters(this.filters,"pagination");
+    this.filters=this._productService.getFilters()
 
     this.actualpage = pageNumber;
     this.filters.limit = 6;
     this.filters.offset = this.filters.limit * (this.actualpage - 1);
     this._productService.setFilters(this.filters);
+    this._productService.setFilters(this.filters,"pagination");
 
     this.checkMove();
 
     await setTimeout(()=>{
       this.actualpage = pageNumber;
       this.pageChange.emit();
-    }, 30) ;
+    }, 50) ;
     
 
     // this.location.replaceState('/shop/' + btoa(JSON.stringify(this.filters)));
