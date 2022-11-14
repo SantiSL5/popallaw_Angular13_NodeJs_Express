@@ -4,6 +4,6 @@
         <option *ngFor="let category of listCategories" [value]="category.slug">{{category.name}}</option>
     </select>
     <section id="slider">
-        <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options"></ngx-slider>
+        <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options" (userChange)="sliderFilterSet()"></ngx-slider>
     </section>
 </div>

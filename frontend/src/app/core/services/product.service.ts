@@ -46,9 +46,7 @@ export class ProductService {
       filters.priceMin = undefined;
       filters.priceMax = undefined;
       this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
-    } else if (call == "category") {
-      filters.priceMin = undefined;
-      filters.priceMax = undefined;
+    } else if (call == "slider") {
       this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
     } else {
       filters.priceMin = this.getProducts().minprice;

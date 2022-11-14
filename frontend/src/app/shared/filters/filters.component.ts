@@ -53,34 +53,33 @@ export class FiltersComponent implements OnInit {
     this.setFilters("category");
   }
 
+  sliderFilterSet() {
+    this.filters=this._productService.getFilters();
+    this.filters.priceMin=this.minValue;
+    this.filters.priceMax=this.maxValue;
+    this.setFilters("slider");
+  }
+
   async setFilters(call:string){
     this._productService.setFilters(this.filters,call);
-    await setTimeout(()=>{
-      this.setOptions();
-      this.filtersChange.emit();
-    }, 20) ;
+    if (call=="category") {
+      await setTimeout(()=>{
+        this.setOptions();
+        this.filtersChange.emit();
+      }, 80);
+    }else if (call=="slider") {
+      await setTimeout(()=>{
+        this.filtersChange.emit();
+      }, 80);
+    }
+
   }
 
   setOptions() {    
     const newOptions: Options = Object.assign({}, this.options);
-    let newPriceMax: number =this.maxValue;
-    let newPriceMin: number =this.minValue;
-    newPriceMin=this._productService.getProducts().minprice;
-    newPriceMax=this._productService.getProducts().maxprice;
     newOptions.floor=this._productService.getProducts().minprice;
     newOptions.ceil=this._productService.getProducts().maxprice;
-    if (this.options.floor == 0 && this.options.ceil == 0) {
-      newOptions.translate= (value: number, label: LabelType): string => {
-        switch (label) {
-          case LabelType.Low:
-            return "";
-          case LabelType.High:
-            return "";
-          default:
-            return '€' + value;
-        }
-      }
-    }else if (newPriceMin == newPriceMax) {
+    if (newOptions.floor == newOptions.ceil) {
       newOptions.translate= (value: number, label: LabelType): string => {
         switch (label) {
           case LabelType.Low:
@@ -103,11 +102,8 @@ export class FiltersComponent implements OnInit {
         }
       }
     }
-    this.minValue = newPriceMax;
-    this.minValue = newPriceMin;
+    this.minValue = newOptions.floor;
+    this.maxValue = newOptions.ceil;
     this.options = newOptions;
   }
-
-
-
 }
