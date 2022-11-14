@@ -58,6 +58,7 @@ export class FiltersComponent implements OnInit {
     this.filters.priceMin=this.minValue;
     this.filters.priceMax=this.maxValue;
     this.setFilters("slider");
+    
   }
 
   async setFilters(call:string){
@@ -66,7 +67,7 @@ export class FiltersComponent implements OnInit {
       await setTimeout(()=>{
         this.setOptions();
         this.filtersChange.emit();
-      }, 80);
+      }, 50);
     }else if (call=="slider") {
       await setTimeout(()=>{
         this.filtersChange.emit();

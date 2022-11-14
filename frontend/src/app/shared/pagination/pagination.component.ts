@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
 import { Product } from 'src/app/core/models/product';
 import { Filters } from 'src/app/core/models/filters';
 import { ProductService } from 'src/app/core/services/product.service';
+import { PaginationConfig } from 'src/app/core';
 
 @Component({
   selector: 'app-pagination',
@@ -22,7 +23,12 @@ export class PaginationComponent {
   onMostRight: Boolean = false;
 
   @Output() pageChange = new EventEmitter<void>();
-
+  @Input()
+  set config(config: PaginationConfig) {
+    if (config) {
+      this.setNumPages(config.numItems)
+    }
+  }
   constructor(
     private _productService: ProductService,
   ) { }
@@ -50,7 +56,7 @@ export class PaginationComponent {
     await setTimeout(()=>{
       this.actualpage = pageNumber;
       this.pageChange.emit();
-    }, 20) ;
+    }, 30) ;
     
 
     // this.location.replaceState('/shop/' + btoa(JSON.stringify(this.filters)));

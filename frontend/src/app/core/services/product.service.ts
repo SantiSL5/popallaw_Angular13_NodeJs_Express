@@ -48,6 +48,8 @@ export class ProductService {
       this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
     } else if (call == "slider") {
       this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
+    } else if (call == "pagination") {
+      this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
     } else {
       filters.priceMin = this.getProducts().minprice;
       filters.priceMax = this.getProducts().maxprice;

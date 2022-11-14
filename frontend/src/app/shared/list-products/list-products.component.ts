@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
+import { PaginationConfig } from 'src/app/core';
 // import { FiltersComponent } from '../filters/filters.component';
 
 @Component({
@@ -27,6 +28,7 @@ export class ListProductsComponent implements OnInit {
     limit: 6,
     offset: 0
   };
+  listConfig!: PaginationConfig;
   minValue = 0;
   maxValue = 0;
   urlParams: any = [];
@@ -42,6 +44,11 @@ export class ListProductsComponent implements OnInit {
     this.filters = this.defaultFilters;
     this.getUrl();
     this.getAllProducts();
+    this.listConfig= {
+      limit:6,
+      offset:0,
+      numItems:this.productCount
+    }
   }
 
   getAllProducts(): void {
@@ -54,7 +61,11 @@ export class ListProductsComponent implements OnInit {
       this.productCount = this.products.numproducts;
       this.maxValue = this.products.maxprice;
       this.minValue = this.products.minprice;
-      // this.changePagination.next();
+      this.listConfig= {
+        limit:6,
+        offset:0,
+        numItems:this.productCount
+      }
     }
   }
 
