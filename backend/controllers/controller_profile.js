@@ -2,11 +2,12 @@ const User = require('../models/user');
 
 exports.paramsProfile = async (req, res, next, username) => {
     User.findOne({ username: username }).then(function (user) {
-        if (!user) { return res.sendStatus(404); }
-
-        req.profile = user;
-
-        return next();
+        if (!user) { 
+            return res.json({ profile: "notFound"}); 
+        } else {
+            req.profile = user;
+            return next();
+        }
     }).catch(next);
 }
 

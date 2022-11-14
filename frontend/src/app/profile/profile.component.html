@@ -1,19 +1,31 @@
-<main>
+<main *ngIf="loaded | async">
     <div class="profile">
         <div class="profile-l">
             <div class="profileImgDiv">
-                <img src="https://static.productionready.io/images/smiley-cyrus.jpg" class="profileimg">
+                <img src="{{ profile.image }}" class="profileimg">
             </div>
             <div class="profileUsername">
-                <p class="username">Salva</p>
+                <p class="username">{{ profile.username }}</p>
             </div>
             <div class="profileDescription">
-                <p>Biography</p>
-                <p class="bio">Bio</p>
+                <p class="bio-title">Bio</p>
+                <p class="bio">{{ profile.bio }}</p>
             </div>
         </div>
         <div class="profile-r">
-            <p>hola</p>
+            <div class="optionsOwner" *ngIf="owner">
+                <button><span class="followers">3</span> Followers</button>
+                <button><span class="followings">3</span> Followings</button>
+                <button><span class="likes">3</span> Likes</button>
+                <button><span class="comments">3</span> Comments</button>
+                <button><span class="settings">3333333333333</span> Settings</button>
+            </div>
+            <div class="options" *ngIf="!owner">
+                <button><span class="followers">3</span> Followers</button>
+                <button><span class="followings">3</span> Followings</button>
+                <button><span class="likes">3</span> Likes</button>
+                <button><span class="comments">3</span> Comments</button>
+            </div>
         </div>
     </div>
 </main>

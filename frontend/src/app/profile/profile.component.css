@@ -7,7 +7,8 @@ main {
 }
 
 .profile {
-    border: 1px solid black;
+    box-shadow: 0px 0px 10px 3px black;
+    border-radius: 30px;
     background-color: white;
     display: flex;
     justify-content: center;
@@ -19,6 +20,7 @@ main {
 
 .profile-l {
     width: 30%;
+    border-right: 5px ridge black;
     display: flex;
     text-align: center;
     align-items: center;
@@ -30,15 +32,69 @@ main {
     justify-content: center;
     align-items: center;
     height: 40%;
+    width: 100%;
 }
 
 .profileimg {
     border-radius: 50%;
     width: 20vh;
     height: 20vh;
+    box-shadow: 7px 4px 5px black;
+}
+
+.username {
+    font-size: 32px;
+}
+
+.profileUsername {
+    width: 100%;
+    border-top: 3px ridge black;
+    border-bottom: 3px ridge black;
+}
+
+.profileDescription {
+    width: 100%;
+}
+
+.bio-title {
+    border-bottom: 3px ridge black;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.bio {
+    text-align: left;
+    margin: 20px;
 }
 
 .profile-r {
     width: 70%;
     justify-content: right;
+}
+
+.optionsOwner {
+   display: flex;
+}
+
+.options > button {
+    width: 25%;
+}
+
+.optionsOwner > button:last-of-type {
+    border-top-right-radius: 30px;
+}
+
+.optionsOwner {
+    display: flex;
+    width: 100%;
+}
+
+.optionsOwner > button {
+    width: 25%;
+}
+
+.options > button:last-of-type {
+    border-top-right-radius: 30px;
 }

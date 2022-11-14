@@ -13,6 +13,19 @@ exports.loadUser = async (req, res) => {
     }
 }
 
+exports.getProfile = async (req, res) => {
+    try {
+        let user = await User.findById(req.payload.id);
+        if (!user) {
+            res.json({"result":false});
+        }
+        res.json(user.toProfileJSONFor());
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Hubo un error');
+    }
+}
+
 exports.login = async (req, res) => {
     try {
         let user = await User.findOne({ email: req.body.email });
