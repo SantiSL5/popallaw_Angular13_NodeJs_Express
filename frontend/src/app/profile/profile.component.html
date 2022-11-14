@@ -4,6 +4,10 @@
             <div class="profileImgDiv">
                 <img src="{{ profile.image }}" class="profileimg">
             </div>
+            <button *ngIf="!owner && profile.following === false"
+                (click)="toggleFollow(profile.following)" class="button">Follow</button>
+            <button *ngIf="!owner && profile.following === true"
+                (click)="toggleFollow(profile.following)" class="button-active">Unfollow</button>
             <div class="profileUsername">
                 <p class="username">{{ profile.username }}</p>
             </div>
@@ -38,16 +42,14 @@
                     </div>
 
                     <label for="password">Password:</label>
-                    <input type="password" name="password"
-                            formControlName="password">
+                    <input type="password" name="password" formControlName="password">
                     <div class="text-danger" *ngIf="settingsForm.get('password') && settingsForm.get('password')?.hasError('minlength') &&
                         settingsForm.get('password')?.touched">
                         <span>Password <strong>required</strong>, 5 characters min</span>
                     </div>
 
                     <label for="repeatPassword">Repeat password:</label>
-                    <input type="password" name="repeatPassword"
-                            formControlName="repeatPassword">
+                    <input type="password" name="repeatPassword" formControlName="repeatPassword">
                     <div class="text-danger" *ngIf="settingsForm.get('repeatPassword')?.hasError('required') && settingsForm.get('repeatPassword')?.touched
                         || settingsForm.get('repeatPassword')?.hasError('minlength') && settingsForm.get('repeatPassword')?.touched
                         || confirmPassword_invalid && settingsForm.get('repeatPassword')?.touched">

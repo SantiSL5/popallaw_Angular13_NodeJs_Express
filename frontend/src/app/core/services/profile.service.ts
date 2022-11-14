@@ -23,7 +23,7 @@ export class ProfileService {
   }
 
   unfollow(username: string): Observable<Profile> {
-    return this.apiService.delete('/profiles/' + username + '/follow');
+    return this.apiService.delete('/profile/' + username + '/follow');
   }
 
 }

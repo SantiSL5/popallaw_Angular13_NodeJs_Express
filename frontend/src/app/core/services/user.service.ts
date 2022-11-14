@@ -37,7 +37,6 @@ export class UserService {
 
       this.http.get(environment.urlUser).subscribe(
         (data) => {                           //Next callback
-          console.log(data)
           this.setAuth(data);
         },
         (error) => {                              //Error callback
