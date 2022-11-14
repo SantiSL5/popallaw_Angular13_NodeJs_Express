@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from 'src/app/core';
 import { Product } from 'src/app/core/models/product';
 import { ProductService } from 'src/app/core/services/product.service';
 
@@ -17,7 +18,8 @@ export class DetailsProductComponent implements OnInit {
   constructor(
     private _productService: ProductService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private _userService: UserService,
   ) { }
 
   ngOnInit(): void {
@@ -37,15 +39,23 @@ export class DetailsProductComponent implements OnInit {
   }
 
   toggleFav(slug: string, operation: string) {
-    if (operation == "fav") {
-      this.product.favorited = true;
-      this.product.favoritesCount++;
-      this._productService.favProduct(slug).subscribe();
-    } else {
-      this.product.favorited = false;
-      this.product.favoritesCount--;
-      this._productService.unfavProduct(slug).subscribe();
-    }
+    this._userService.currentUser.subscribe(
+      (loggedUser) => {
+        if (loggedUser.username) {
+          if (operation == "fav") {
+            this.product.favorited = true;
+            this.product.favoritesCount++;
+            this._productService.favProduct(slug).subscribe();
+          } else {
+            this.product.favorited = false;
+            this.product.favoritesCount--;
+            this._productService.unfavProduct(slug).subscribe();
+          }
+        } else {
+          this.router.navigate(['/login']);
+        }
+      }
+    );
   }
 
 }

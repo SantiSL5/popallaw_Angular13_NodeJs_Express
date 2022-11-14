@@ -47,6 +47,7 @@ export class ProfileComponent implements OnInit {
   view: string = "list";
   user!: string;
   owner: boolean = false;
+  loggedUser: string = "";
   loaded: Promise<boolean> = Promise.resolve(false);
   profile!: Profile;
 
@@ -59,7 +60,7 @@ export class ProfileComponent implements OnInit {
         this.view = "list";
         this.owner = this.route.snapshot.paramMap.get("username") == userData.username;
         this._profileService.get(this.user).subscribe(profile => {
-
+          this.loggedUser = userData.username;
           if (profile == "notFound") {
             this.router.navigateByUrl('/');
           } else {
@@ -99,12 +100,16 @@ export class ProfileComponent implements OnInit {
   }
 
   toggleFollow(following: Boolean) {
-    if (!following) {
-      this._profileService.follow(this.profile.username).subscribe();
-      this.profile.following = true;
+    if (this.loggedUser) {
+      if (!following) {
+        this._profileService.follow(this.profile.username).subscribe();
+        this.profile.following = true;
+      } else {
+        this._profileService.unfollow(this.profile.username).subscribe();
+        this.profile.following = false;
+      }
     } else {
-      this._profileService.unfollow(this.profile.username).subscribe();
-      this.profile.following = false;
+      this.router.navigate(['/login']);
     }
   }
 

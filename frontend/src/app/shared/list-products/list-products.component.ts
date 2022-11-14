@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
-import { PaginationConfig } from 'src/app/core';
+import { PaginationConfig, UserService } from 'src/app/core';
 // import { FiltersComponent } from '../filters/filters.component';
 
 @Component({
@@ -38,6 +38,7 @@ export class ListProductsComponent implements OnInit {
     private toastrService: ToastrService,
     private route: ActivatedRoute,
     private router: Router,
+    private _userService: UserService,
   ) { }
 
   ngOnInit(): void {
@@ -91,15 +92,24 @@ export class ListProductsComponent implements OnInit {
   }
 
   toggleFav(slug: string, operation: string, i: number) {
-    if (operation == "fav") {
-      this.listProducts[i].favorited = true;
-      this.listProducts[i].favoritesCount++;
-      this._productService.favProduct(slug).subscribe();
-    } else {
-      this.listProducts[i].favorited = false;
-      this.listProducts[i].favoritesCount--;
-      this._productService.unfavProduct(slug).subscribe();
-    }
+    this._userService.currentUser.subscribe(
+      (loggedUser) => {
+        if (loggedUser.username) {
+          if (operation == "fav") {
+            this.listProducts[i].favorited = true;
+            this.listProducts[i].favoritesCount++;
+            this._productService.favProduct(slug).subscribe();
+          } else {
+            this.listProducts[i].favorited = false;
+            this.listProducts[i].favoritesCount--;
+            this._productService.unfavProduct(slug).subscribe();
+          }
+        } else {
+          this.router.navigate(['/login']);
+        }
+      }
+    );
   }
+
 
 }
