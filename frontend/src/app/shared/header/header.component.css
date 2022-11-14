@@ -24,3 +24,12 @@ nav {
     color: #262626;
     text-decoration: none;
 }
+
+img {
+    height: 40px;
+    width: 40px;
+}
+
+img:hover {
+    cursor: pointer;
+}

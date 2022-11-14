@@ -18,13 +18,44 @@
                 <button><span class="followings">3</span> Followings</button>
                 <button><span class="likes">3</span> Likes</button>
                 <button><span class="comments">3</span> Comments</button>
-                <button><span class="settings">3333333333333</span> Settings</button>
+                <button (click)="viewSettings()">Settings</button>
             </div>
             <div class="options" *ngIf="!owner">
                 <button><span class="followers">3</span> Followers</button>
                 <button><span class="followings">3</span> Followings</button>
                 <button><span class="likes">3</span> Likes</button>
                 <button><span class="comments">3</span> Comments</button>
+            </div>
+            <div class="settings" *ngIf="view=='settings'">
+                <form [formGroup]="settingsForm" (ngSubmit)="submitForm()">
+
+                    <h3>Settings</h3>
+                    <label for="bio">Bio:</label>
+                    <textarea class="bioInput" type="text" name="bio" formControlName="bio"></textarea>
+                    <div class="text-danger" *ngIf="settingsForm.get('bio')?.hasError('required') &&
+                                        settingsForm.get('bio')?.touched">
+                        <span>Bio <strong>required</strong></span>
+                    </div>
+
+                    <label for="password">Password:</label>
+                    <input type="password" name="password"
+                            formControlName="password">
+                    <div class="text-danger" *ngIf="settingsForm.get('password') && settingsForm.get('password')?.hasError('minlength') &&
+                        settingsForm.get('password')?.touched">
+                        <span>Password <strong>required</strong>, 5 characters min</span>
+                    </div>
+
+                    <label for="repeatPassword">Repeat password:</label>
+                    <input type="password" name="repeatPassword"
+                            formControlName="repeatPassword">
+                    <div class="text-danger" *ngIf="settingsForm.get('repeatPassword')?.hasError('required') && settingsForm.get('repeatPassword')?.touched
+                        || settingsForm.get('repeatPassword')?.hasError('minlength') && settingsForm.get('repeatPassword')?.touched
+                        || confirmPassword_invalid && settingsForm.get('repeatPassword')?.touched">
+                        <span>Passwords <strong>must</strong> be equal.</span>
+                    </div>
+                    <button class="btn btn-lg btn-block btn-primary mb-2" type="submit"
+                        [disabled]="!settingsForm.valid">Change values</button>
+                </form>
             </div>
         </div>
     </div>

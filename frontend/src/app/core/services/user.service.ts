@@ -35,10 +35,17 @@ export class UserService {
     // If JWT detected, attempt to get & store user's info
     if (this.jwtService.getToken()) {
 
-      this.http.get(environment.urlUser)
-        .subscribe(data => {
+      this.http.get(environment.urlUser).subscribe(
+        (data) => {                           //Next callback
+          console.log(data)
           this.setAuth(data);
-        });
+        },
+        (error) => {                              //Error callback
+          console.error('error caught in component');
+          this.purgeAuth();
+          location.reload();
+        }
+      )
 
     } else {
       // Remove any potential remnants of previous auth states
@@ -75,8 +82,6 @@ export class UserService {
       } else {
         if ((type === 'login')) {
           this.toastr.error(data.msg, 'Login');
-        } else {
-          console.log(data);
         }
       }
     }))
@@ -87,6 +92,10 @@ export class UserService {
       `${environment.api_url}${path}`,
       body
     );
+  }
+
+  updateUser(body:any):Observable<any> {
+    return this.apiService.put('/user/update', body);
   }
 
   getCurrentUser(): User {

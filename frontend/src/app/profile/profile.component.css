@@ -98,3 +98,27 @@ main {
 .options > button:last-of-type {
     border-top-right-radius: 30px;
 }
+
+.settings {
+    width: 80%;
+    margin: 20px;
+}
+
+.settings form {
+    width: 100%;
+}
+
+.settings input {
+    width: 100%;
+}
+
+.bioInput{
+    resize: none;
+    height: 80px;
+    width:100%;
+    word-break: break-word;
+}
+
+form button {
+    margin-top: 20px;
+}

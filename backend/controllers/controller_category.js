@@ -55,7 +55,6 @@ exports.updateCategory = async (req, res) => {
             res.json(FormatSuccess("Category updated", newCategory));
         }
     } catch (error) {
-        console.log(req);
         res.status(500).send(FormatError("Error occurred", res.statusCode));
     }
 }

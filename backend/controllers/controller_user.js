@@ -1,5 +1,18 @@
 const User = require('../models/user');
 
+// exports.deleteusers = async (req, res) => {
+//     try {
+//         let user = await User.find();
+//         if (!user) {
+//             res.status(404);
+//         }
+//         res.json(user);
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).send('Hubo un error');
+//     }
+// }
+
 exports.loadUser = async (req, res) => {
     try {
         let user = await User.findById(req.payload.id);
@@ -70,10 +83,10 @@ exports.updateUser = async (req, res, next) => {
     }
 
     if (typeof req.body.password !== 'undefined') {
-        user.setPass(req.body.password);
+        user.setPassword(req.body.password);
     }
 
     user.save().then(function () {
-        return res.json(user.toAuthJSON());
+        return res.json(user.toProfileJSONFor());
     });
 }
