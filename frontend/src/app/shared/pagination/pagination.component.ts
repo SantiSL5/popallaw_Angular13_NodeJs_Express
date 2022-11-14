@@ -56,7 +56,7 @@ export class PaginationComponent {
     await setTimeout(()=>{
       this.actualpage = pageNumber;
       this.pageChange.emit();
-    }, 30) ;
+    }, 50) ;
     
 
     // this.location.replaceState('/shop/' + btoa(JSON.stringify(this.filters)));

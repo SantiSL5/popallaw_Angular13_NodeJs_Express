@@ -1,29 +1,33 @@
-<p (click)="returnShop()">Return to shop</p>
 <div>
-  <div class="wrapper">
-    <div class="product-img">
-      <img src="../../../assets/img/{{product.photo}}">
-      <!-- <p class="ubication">Ubicación: {{product.ubication}}</p> -->
-      <!-- <p class="state"> Estado: {{product.status}}</p> -->
-      <!-- <button class="return" type="button" [routerLink]="['/shop']">return</button> -->
-      <div class="favorite">
-        <div class="heart" *ngIf="product.favorited === true"><img src="../../../assets/heart-solid.svg" alt="" (click)="toggleFav(product.slug, 'unfav')"></div>
-        <div class="heart" *ngIf="product.favorited === false"><img src="../../../assets/heart-regular.svg" alt="" (click)="toggleFav(product.slug, 'fav')"></div>
-        <p class="favoritedCount">{{product.favoritesCount}}</p>
+  <p (click)="returnShop()">Return to shop</p>
+  <div>
+    <div class="wrapper">
+      <div class="product-img">
+        <img src="../../../assets/img/{{product.photo}}">
+        <!-- <p class="ubication">Ubicación: {{product.ubication}}</p> -->
+        <!-- <p class="state"> Estado: {{product.status}}</p> -->
+        <!-- <button class="return" type="button" [routerLink]="['/shop']">return</button> -->
+        <div class="favorite">
+          <div class="heart" *ngIf="product.favorited === true"><img src="../../../assets/heart-solid.svg" alt=""
+              (click)="toggleFav(product.slug, 'unfav')"></div>
+          <div class="heart" *ngIf="product.favorited === false"><img src="../../../assets/heart-regular.svg" alt=""
+              (click)="toggleFav(product.slug, 'fav')"></div>
+          <p class="favoritedCount">{{product.favoritesCount}}</p>
+        </div>
       </div>
-    </div>
-    <div class="product-info">
-      <div class="product-text">
-        <h1>{{product.name}}</h1>
-        <h2>{{product.categoryname.name}}</h2>
-        <!-- <p class="seller">Vendedor: {{product.seller}}</p> -->
-        <p class="description">{{product.description}}</p>
-      </div>
-      <div class="product-price-btn">
-        <p><span>{{product.price}}</span> €</p>
-        <button type="button">buy now</button>
+      <div class="product-info">
+        <div class="product-text">
+          <h1>{{product.name}}</h1>
+          <h2>{{product.categoryname.name}}</h2>
+          <!-- <p class="seller">Vendedor: {{product.seller}}</p> -->
+          <p class="description">{{product.description}}</p>
+        </div>
+        <div class="product-price-btn">
+          <p><span>{{product.price}}</span> €</p>
+          <button type="button">buy now</button>
+        </div>
       </div>
     </div>
   </div>
+  <app-comments [slug]="product.slug"></app-comments>
 </div>
-<app-comments [slug]="product.slug"></app-comments>

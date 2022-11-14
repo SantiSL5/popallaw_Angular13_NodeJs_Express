@@ -34,8 +34,10 @@ export class FiltersComponent implements OnInit {
       floor: this.minValue,
       ceil: this.maxValue,
     };
-    this.setOptions();
     this.getAllCategories();
+    setTimeout(()=>{
+      this.setOptions();
+    }, 80);
   }
 
   getAllCategories(): void {

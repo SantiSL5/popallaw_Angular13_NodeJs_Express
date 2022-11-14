@@ -45,10 +45,17 @@ export class ProductService {
     if (call == "category") {
       filters.priceMin = undefined;
       filters.priceMax = undefined;
+      filters.offset=0;
       this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
     } else if (call == "slider") {
+      filters.offset=0;
       this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
     } else if (call == "pagination") {
+      this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
+    } else if (call == "search") {
+      filters.priceMin = undefined;
+      filters.priceMax = undefined;
+      console.log(filters);
       this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
     } else {
       filters.priceMin = this.getProducts().minprice;

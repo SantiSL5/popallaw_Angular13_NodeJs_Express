@@ -41,14 +41,27 @@ export class ListProductsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.filters = this.defaultFilters;
-    this.getUrl();
-    this.getAllProducts();
-    this.listConfig= {
-      limit:6,
-      offset:0,
-      numItems:this.productCount
-    }
+    this.route.queryParams.subscribe(params => {
+      if (params['filters'] == undefined) {
+        this.filters = this.defaultFilters;
+        this._productService.setFilters(this.filters, "shop");
+        setTimeout(()=>{
+          this.getAllProducts();
+        }, 80);
+        this.getAllProducts();
+        this.listConfig = {
+          limit: 6,
+          offset: 0,
+          numItems: this.productCount
+        }
+      } else {
+        this.filters=JSON.parse(atob(params['filters'])) as Filters;
+        this._productService.setFilters(this.filters, "filters")
+        setTimeout(()=>{
+          this.getAllProducts();
+        }, 80);
+      }
+    });
   }
 
   getAllProducts(): void {
@@ -61,10 +74,10 @@ export class ListProductsComponent implements OnInit {
       this.productCount = this.products.numproducts;
       this.maxValue = this.products.maxprice;
       this.minValue = this.products.minprice;
-      this.listConfig= {
-        limit:6,
-        offset:0,
-        numItems:this.productCount
+      this.listConfig = {
+        limit: 6,
+        offset: 0,
+        numItems: this.productCount
       }
     }
   }
@@ -83,13 +96,6 @@ export class ListProductsComponent implements OnInit {
     this.getAllProducts();
   }
 
-  getUrl() {
-    this.route.queryParams
-      .subscribe(params => {
-        this.urlParams = params;
-      });
-  }
-
   toggleFav(slug: string, operation: string, i: number) {
     if (operation == "fav") {
       this.listProducts[i].favorited = true;
@@ -101,5 +107,6 @@ export class ListProductsComponent implements OnInit {
       this._productService.unfavProduct(slug).subscribe();
     }
   }
+
 
 }

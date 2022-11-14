@@ -110,6 +110,9 @@ exports.getProduct = async (req, res) => {
                 product = product.toJSONFor(user);
                 res.json(FormatObject(product));
             });
+        }else {
+            product = product.toJSONFor();
+            res.json(FormatObject(product));
         }
 
     } catch (error) {

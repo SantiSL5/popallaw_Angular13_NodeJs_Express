@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Category } from 'src/app/core/models/category';
-import { CategoryService } from 'src/app/core/services/category.service';
+import { Filters, Category, CategoryService, ProductService } from 'src/app/core';
 
 @Component({
   selector: 'app-infinite-scroll',
@@ -13,9 +12,11 @@ export class InfiniteScrollComponent implements OnInit {
   listCategories: Category[] = [];
   limit: number = 2;
   offset: number = 0;
+  filters!:Filters;
 
   constructor(
     private _categoryService: CategoryService,
+    private _productService: ProductService,
     private router: Router,
   ) { }
 
@@ -35,9 +36,12 @@ export class InfiniteScrollComponent implements OnInit {
   }
 
   goShop(slug: string) {
+    this.filters=this._productService.getFilters();
+    this.filters.category=slug;
+    this._productService.setFilters(this.filters,"category");
     this.router.navigate(
       ['/shop'],
-      { queryParams: { category: btoa(slug) } }
+      { queryParams: { filters: btoa(JSON.stringify(this.filters)) } }
     );
   }
 
