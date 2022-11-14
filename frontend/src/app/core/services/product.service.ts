@@ -6,7 +6,6 @@ import { ApiService } from './api.service';
 import { Product } from '../models/product';
 import { Filters } from '../models/filters';
 import { map } from 'rxjs/operators';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -34,8 +33,7 @@ export class ProductService {
   // filtersSubject.next(defaultFilters);
 
   constructor(
-    private apiService: ApiService,
-    private router: Router
+    private apiService: ApiService
   ) { }
 
   getFilters(): Filters {
@@ -52,14 +50,10 @@ export class ProductService {
       this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
     } else if (call == "pagination") {
       this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
-    } else if (call == "search") {
-      filters.priceMin = undefined;
-      filters.priceMax = undefined;
-      this.filtersSubject.next({ ...this.filtersSubject.value, ...filters });
     } else if (call == "clear") {
-      filters = {
-        limit: 6,
-        offset: 0
+      filters= {
+        limit:6,
+        offset:0
       }
       this.filtersSubject.next(filters);
     } else {
@@ -67,7 +61,6 @@ export class ProductService {
       filters.priceMax = this.getProducts().maxprice;
       this.filtersSubject.next(filters);
     }
-    console.log(filters);
     await this.refreshProducts();
   }
 

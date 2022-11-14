@@ -27,10 +27,6 @@ export class PaginationComponent {
   set config(config: PaginationConfig) {
     if (config) {
       this.setNumPages(config.numItems);
-      if (config.offset==0) {
-        this.actualpage=1;
-        config.offset=6;
-      }
     }
   }
   constructor(
@@ -48,17 +44,19 @@ export class PaginationComponent {
 
   async setPageTo(pageNumber: number) {
 
+    this._productService.setFilters(this.filters,"pagination");
+
     this.actualpage = pageNumber;
     this.filters.limit = 6;
     this.filters.offset = this.filters.limit * (this.actualpage - 1);
     this._productService.setFilters(this.filters);
 
     this.checkMove();
-    this._productService.setFilters(this.filters,"pagination");
+
     await setTimeout(()=>{
       this.actualpage = pageNumber;
       this.pageChange.emit();
-    }, 50) ;
+    }, 30) ;
     
 
     // this.location.replaceState('/shop/' + btoa(JSON.stringify(this.filters)));

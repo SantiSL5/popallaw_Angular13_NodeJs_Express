@@ -31,6 +31,7 @@ export class ListProductsComponent implements OnInit {
   listConfig!: PaginationConfig;
   minValue = 0;
   maxValue = 0;
+  urlParams: any = [];
 
   constructor(
     private _productService: ProductService,
@@ -40,13 +41,14 @@ export class ListProductsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.filters=this._productService.getFilters();
-      this._productService.setFilters(this.filters, "filters")
-      setTimeout(() => {
-        this.getAllProducts();
-      }, 80);
-    });
+    this.filters = this.defaultFilters;
+    this.getUrl();
+    this.getAllProducts();
+    this.listConfig= {
+      limit:6,
+      offset:0,
+      numItems:this.productCount
+    }
   }
 
   getAllProducts(): void {
@@ -59,6 +61,11 @@ export class ListProductsComponent implements OnInit {
       this.productCount = this.products.numproducts;
       this.maxValue = this.products.maxprice;
       this.minValue = this.products.minprice;
+      this.listConfig= {
+        limit:6,
+        offset:0,
+        numItems:this.productCount
+      }
     }
   }
 
@@ -74,11 +81,13 @@ export class ListProductsComponent implements OnInit {
 
   loadFilters() {
     this.getAllProducts();
-    this.listConfig = {
-      limit: 6,
-      offset: 0,
-      numItems: this.productCount
-    }
+  }
+
+  getUrl() {
+    this.route.queryParams
+      .subscribe(params => {
+        this.urlParams = params;
+      });
   }
 
   toggleFav(slug: string, operation: string, i: number) {
@@ -92,6 +101,5 @@ export class ListProductsComponent implements OnInit {
       this._productService.unfavProduct(slug).subscribe();
     }
   }
-
 
 }
