@@ -1,4 +1,5 @@
 <div id="filters">
+    <button (click)="clearFilters()">Clear filters</button>
     <select id="category" name="category" [(ngModel)]="selectedValue" (change)="categorySet(selectedValue)">
         <option [value]="undefined">Category</option>
         <option *ngFor="let category of listCategories" [value]="category.slug">{{category.name}}</option>

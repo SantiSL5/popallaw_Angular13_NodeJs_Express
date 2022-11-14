@@ -29,12 +29,14 @@ export class SearchComponent implements OnInit {
   public enterEvent(data: any): void {
     if (typeof data.search === 'string') {
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.filters=this._productService.getFilters();
+        this.filters= {
+          limit:6,
+          offset:0
+        }
         this.filters.name=data.search;
         this._productService.setFilters(this.filters,"search");
         this.router.navigate(
-            ['/shop'],
-            { queryParams: { filters: btoa(JSON.stringify(this.filters)) } }
+            ['/shop']
         );
       });
     }
@@ -44,13 +46,14 @@ export class SearchComponent implements OnInit {
     if (this.name.nativeElement.value =! " ") {
       this.name.nativeElement.value=""
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.filters=this._productService.getFilters();
+        this.filters= {
+          limit:6,
+          offset:0
+        }
         this.filters.name=this.name.nativeElement.value;
-        console.log(this.filters);
         this._productService.setFilters(this.filters,"search");
         this.router.navigate(
-            ['/shop'],
-            { queryParams: { filters: btoa(JSON.stringify(this.filters)) } }
+          ['/shop']
         );
       });
     }else {

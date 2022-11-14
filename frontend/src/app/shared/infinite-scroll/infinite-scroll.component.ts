@@ -36,12 +36,14 @@ export class InfiniteScrollComponent implements OnInit {
   }
 
   goShop(slug: string) {
-    this.filters=this._productService.getFilters();
+    this.filters= {
+      limit:6,
+      offset:0
+    }
     this.filters.category=slug;
     this._productService.setFilters(this.filters,"category");
     this.router.navigate(
-      ['/shop'],
-      { queryParams: { filters: btoa(JSON.stringify(this.filters)) } }
+      ['/shop']
     );
   }
 
