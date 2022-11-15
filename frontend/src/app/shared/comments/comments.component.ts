@@ -34,6 +34,7 @@ export class CommentsComponent implements OnInit {
   user!: string;
 
   ngOnInit() {
+    console.log(this.slug);
     if (this.slug) {
       this.loadComments();
     }

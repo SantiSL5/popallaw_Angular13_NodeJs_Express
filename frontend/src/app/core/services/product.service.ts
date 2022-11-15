@@ -67,7 +67,6 @@ export class ProductService {
     } else {
       this.filtersSubject.next(this.defaultFilters);
     }
-    console.log(filters);
     await this.refreshProducts();
   }
 

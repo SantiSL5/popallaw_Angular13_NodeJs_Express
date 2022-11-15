@@ -47,14 +47,9 @@ export class ListProductsComponent implements OnInit {
     setTimeout(()=>{
       this.getAllProducts();
     }, 50) ;
-    this.listConfig= {
-      limit:6,
-      offset:0,
-      numItems:this.productCount
-    }
   }
 
-  public getAllProducts(): void {
+  public getAllProducts(mode="filters"): void {
     this.products = this._productService.getProducts();
     if (this.products.numproducts == 0) {
       this.isProducts = false;
@@ -64,10 +59,10 @@ export class ListProductsComponent implements OnInit {
       this.productCount = this.products.numproducts;
       this.maxValue = this.products.maxprice;
       this.minValue = this.products.minprice;
-      this.listConfig= {
-        limit:6,
-        offset:0,
-        numItems:this.productCount
+      if (mode=="filters") {
+        this.listConfig= {
+          numItems:this.productCount
+        }
       }
     }
   }
@@ -79,11 +74,15 @@ export class ListProductsComponent implements OnInit {
   }
 
   loadPage() {
-    this.getAllProducts();
+    setTimeout(()=>{
+      this.getAllProducts("pagination");
+    }, 80) ;
   }
 
   loadFilters() {
-    this.getAllProducts();
+    setTimeout(()=>{
+      this.getAllProducts();
+    }, 80) ;
   }
 
   getUrl() {

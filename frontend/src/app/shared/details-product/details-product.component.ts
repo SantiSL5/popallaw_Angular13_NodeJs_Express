@@ -28,7 +28,6 @@ export class DetailsProductComponent implements OnInit {
 
   showDetails(slug: string) {
     this._productService.get(slug).subscribe(data => {
-      console.log(data)
       this.product = data;
     });
   }

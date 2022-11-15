@@ -47,10 +47,8 @@ export class FiltersComponent implements OnInit {
     this.setOptions();
 
     setTimeout(()=>{
-      if (this.filters.category==undefined) {
-        this.selectedValue=''
-      }else {
-        this.selectedValue=this.filters.category
+      if (this.filters.category!=undefined) {
+        this.selectedValue=this.filters.category;
       }
     }, 50);
 
@@ -64,6 +62,7 @@ export class FiltersComponent implements OnInit {
   }
 
   categorySet(category: string | undefined) {
+    this.filters.offset=0;
     this.filters=this._productService.getFilters();
     this.filters.category = category;
     this.filters.priceMax=undefined;
@@ -72,11 +71,11 @@ export class FiltersComponent implements OnInit {
   }
 
   sliderFilterSet() {
+    this.filters.offset=0;
     this.filters=this._productService.getFilters();
     this.filters.priceMin=this.minValue;
     this.filters.priceMax=this.maxValue;
     this.setFilters("slider");
-    
   }
 
   async setFilters(call:string){
@@ -101,6 +100,15 @@ export class FiltersComponent implements OnInit {
   clearFilters() {
     this._productService.setFilters(this.filters, "clear");
     this.setFilters("clear");
+    setTimeout(()=>{
+      this.maxValue=this._productService.getProducts().maxprice;
+      this.maxValue=this._productService.getProducts().minprice;
+      this.options= {
+        floor: this.minValue,
+        ceil: this.maxValue,
+      };
+      this.setOptions();
+    }, 50);
   }
 
   setOptions() {    

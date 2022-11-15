@@ -40,6 +40,7 @@ export class PaginationComponent implements OnInit {
   }
 
   setNumPages(count: number): void {
+    this.actualpage=1;
     this.numpages = Math.ceil(count / 6);
     this.pages=[];
     for (let i = 0; i < this.numpages; i++) {
@@ -49,24 +50,22 @@ export class PaginationComponent implements OnInit {
   }
 
   async setPageTo(pageNumber: number) {
-    this.filters=this._productService.getFilters()
+    if (pageNumber != this.actualpage) {
+      this.filters=this._productService.getFilters();
 
-    this.actualpage = pageNumber;
-    this.filters.limit = 6;
-    this.filters.offset = this.filters.limit * (this.actualpage - 1);
-    this._productService.setFilters(this.filters);
-    this._productService.setFilters(this.filters,"pagination");
-
-    this.checkMove();
-
-    await setTimeout(()=>{
       this.actualpage = pageNumber;
-      this.pageChange.emit();
-    }, 50) ;
-    
-
-    // this.location.replaceState('/shop/' + btoa(JSON.stringify(this.filters)));
-    // this.getListFiltered(this.filters);
+      this.filters.limit = 6;
+      this.filters.offset = this.filters.limit * (this.actualpage - 1);
+      this._productService.setFilters(this.filters);
+      this._productService.setFilters(this.filters,"pagination");
+  
+      this.checkMove();
+  
+      await setTimeout(()=>{
+        this.pageChange.emit();
+      }, 80) ;
+      
+    }
   }
 
   checkMove() {
