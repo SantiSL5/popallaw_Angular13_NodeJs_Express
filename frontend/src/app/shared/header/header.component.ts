@@ -33,4 +33,11 @@ export class HeaderComponent implements OnInit {
     window.location.reload();
   }
 
+  goProfile() {
+    this.router.navigate(['/profile/' + this.currentUser.username]);
+    setTimeout(() => {
+      window.location.reload();
+    }, 5);
+  }
+
 }

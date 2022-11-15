@@ -61,11 +61,23 @@ UserSchema.methods.toAuthJSON = function () {
     };
 };
 
-UserSchema.methods.toProfileJSONFor = function (user) {
+UserSchema.methods.getFollowing = function () {
+    return this.following.length
+};
+
+UserSchema.methods.getLikes = function () {
+    return this.favorites.length
+};
+
+UserSchema.methods.toProfileJSONFor = function (user,followers,comments) {
     return {
         username: this.username,
         image: this.image || 'https://static.productionready.io/images/smiley-cyrus.jpg',
         following: user ? user.isFollowing(this._id) : false,
+        numFollowing: this.getFollowing(),
+        numLikes: this.getLikes(),
+        numFollowers : followers,
+        numComments : comments,
         bio: this.bio
     };
 };

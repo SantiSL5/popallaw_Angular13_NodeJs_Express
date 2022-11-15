@@ -7,6 +7,7 @@ router.get('/', auth.required, userController.loadUser);
 router.post('/login', userController.login);
 router.post('/register', userController.register);
 router.put('/update', auth.required, userController.updateUser);
+
 // router.get('/delete', userController.deleteusers);
 
 module.exports = router;

@@ -104,9 +104,11 @@ export class ProfileComponent implements OnInit {
       if (!following) {
         this._profileService.follow(this.profile.username).subscribe();
         this.profile.following = true;
+        this.profile.numFollowers++;
       } else {
         this._profileService.unfollow(this.profile.username).subscribe();
         this.profile.following = false;
+        this.profile.numFollowers--;
       }
     } else {
       this.router.navigate(['/login']);

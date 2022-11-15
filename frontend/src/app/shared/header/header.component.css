@@ -30,6 +30,6 @@ img {
     width: 40px;
 }
 
-img:hover {
+.userNav a:hover, img:hover {
     cursor: pointer;
 }

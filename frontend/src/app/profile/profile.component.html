@@ -4,10 +4,10 @@
             <div class="profileImgDiv">
                 <img src="{{ profile.image }}" class="profileimg">
             </div>
-            <button *ngIf="!owner && profile.following === false"
-                (click)="toggleFollow(profile.following)" class="button">Follow</button>
-            <button *ngIf="!owner && profile.following === true"
-                (click)="toggleFollow(profile.following)" class="button-active">Unfollow</button>
+            <button *ngIf="!owner && profile.following === false" (click)="toggleFollow(profile.following)"
+                class="button">Follow</button>
+            <button *ngIf="!owner && profile.following === true" (click)="toggleFollow(profile.following)"
+                class="button-active">Unfollow</button>
             <div class="profileUsername">
                 <p class="username">{{ profile.username }}</p>
             </div>
@@ -18,17 +18,17 @@
         </div>
         <div class="profile-r">
             <div class="optionsOwner" *ngIf="owner">
-                <button><span class="followers">3</span> Followers</button>
-                <button><span class="followings">3</span> Followings</button>
-                <button><span class="likes">3</span> Likes</button>
-                <button><span class="comments">3</span> Comments</button>
+                <button><span class="followers">{{profile.numFollowers}}</span> Followers</button>
+                <button><span class="followings">{{profile.numFollowing}}</span> Followings</button>
+                <button><span class="likes">{{profile.numLikes}}</span> Likes</button>
+                <button><span class="comments">{{profile.numComments}}</span> Comments</button>
                 <button (click)="viewSettings()">Settings</button>
             </div>
             <div class="options" *ngIf="!owner">
-                <button><span class="followers">3</span> Followers</button>
-                <button><span class="followings">3</span> Followings</button>
-                <button><span class="likes">3</span> Likes</button>
-                <button><span class="comments">3</span> Comments</button>
+                <button><span class="followers">{{profile.numFollowers}}</span> Followers</button>
+                <button><span class="followings">{{profile.numFollowing}}</span> Followings</button>
+                <button><span class="likes">{{profile.numLikes}}</span> Likes</button>
+                <button><span class="comments">{{profile.numComments}}</span> Comments</button>
             </div>
             <div class="settings" *ngIf="view=='settings'">
                 <form [formGroup]="settingsForm" (ngSubmit)="submitForm()">
