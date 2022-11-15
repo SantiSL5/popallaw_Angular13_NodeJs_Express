@@ -26,4 +26,20 @@ export class ProfileService {
     return this.apiService.delete('/profile/' + username + '/follow');
   }
 
+  getFollowers(username: string): Observable<Profile> {
+    return this.apiService.get('/profile/' + username + '/followers');
+  }
+
+  getFollowings(username: string): Observable<Profile> {
+    return this.apiService.get('/profile/' + username + '/followings');
+  }
+
+  getLikes(username: string): Observable<Profile> {
+    return this.apiService.get('/profile/' + username + '/likes');
+  }
+  
+  getComments(username: string): Observable<Profile> {
+    return this.apiService.get('/profile/' + username + '/comments');
+  }
+
 }

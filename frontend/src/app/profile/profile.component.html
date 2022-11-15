@@ -18,18 +18,19 @@
         </div>
         <div class="profile-r">
             <div class="optionsOwner" *ngIf="owner">
-                <button><span class="followers">{{profile.numFollowers}}</span> Followers</button>
-                <button><span class="followings">{{profile.numFollowing}}</span> Followings</button>
-                <button><span class="likes">{{profile.numLikes}}</span> Likes</button>
-                <button><span class="comments">{{profile.numComments}}</span> Comments</button>
+                <button (click)="changeView('followers')"><span class="followers">{{profile.numFollowers}}</span> Followers</button>
+                <button (click)="changeView('following')"><span class="followings">{{profile.numFollowing}}</span> Followings</button>
+                <button (click)="changeView('likes')"><span class="likes">{{profile.numLikes}}</span> Likes</button>
+                <button (click)="changeView('comments')"><span class="comments">{{profile.numComments}}</span> Comments</button>
                 <button (click)="viewSettings()">Settings</button>
             </div>
             <div class="options" *ngIf="!owner">
-                <button><span class="followers">{{profile.numFollowers}}</span> Followers</button>
-                <button><span class="followings">{{profile.numFollowing}}</span> Followings</button>
-                <button><span class="likes">{{profile.numLikes}}</span> Likes</button>
-                <button><span class="comments">{{profile.numComments}}</span> Comments</button>
+                <button (click)="changeView('followers')"><span class="followers">{{profile.numFollowers}}</span> Followers</button>
+                <button (click)="changeView('following')"><span class="followings">{{profile.numFollowing}}</span> Followings</button>
+                <button (click)="changeView('likes')"><span class="likes">{{profile.numLikes}}</span> Likes</button>
+                <button (click)="changeView('comments')"><span class="comments">{{profile.numComments}}</span> Comments</button>
             </div>
+
             <div class="settings" *ngIf="view=='settings'">
                 <form [formGroup]="settingsForm" (ngSubmit)="submitForm()">
 
@@ -58,6 +59,26 @@
                     <button class="btn btn-lg btn-block btn-primary mb-2" type="submit"
                         [disabled]="!settingsForm.valid">Change values</button>
                 </form>
+            </div>
+            <div *ngIf="view=='followers'">
+                <div *ngFor="let follower of followers">
+                    <img src="{{follower.image}}" alt=""><h1>{{follower.username}}</h1>
+                </div>
+            </div>
+            <div *ngIf="view=='following'">
+                <div *ngFor="let following of followings">
+                    <img src="{{following.image}}" alt=""><h1>{{following.username}}</h1>
+                </div>
+            </div>
+            <div *ngIf="view=='likes'">
+                <div *ngFor="let like of likes">
+                    <img src="../../assets/img/{{like.photo}}" alt=""><h1>{{like.name}}</h1>
+                </div>
+            </div>
+            <div *ngIf="view=='comments'">
+                <div *ngFor="let comment of comments">
+                    <img src="../../assets/img/{{comment.photo}}" alt=""><h1>{{comment.name}}</h1>
+                </div>
             </div>
         </div>
     </div>

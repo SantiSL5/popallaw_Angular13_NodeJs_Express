@@ -85,6 +85,7 @@ ProductSchema.methods.updateFavoriteCount = function () {
 
 ProductSchema.methods.toJSONFor = function (user) {
     return {
+        _id: this._id,
         slug: this.slug,
         name: this.name,
         descrition: this.price,

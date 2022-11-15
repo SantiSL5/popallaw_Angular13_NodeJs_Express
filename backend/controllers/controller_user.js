@@ -86,6 +86,10 @@ exports.updateUser = async (req, res, next) => {
         user.setPassword(req.body.password);
     }
 
+    if (typeof req.body.image !== 'undefined') {
+        user.image = req.body.image;
+    }
+
     user.save().then(function () {
         return res.json(user.toProfileJSONFor());
     });

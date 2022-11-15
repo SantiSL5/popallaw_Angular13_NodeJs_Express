@@ -50,6 +50,10 @@ export class ProfileComponent implements OnInit {
   loggedUser: string = "";
   loaded: Promise<boolean> = Promise.resolve(false);
   profile!: Profile;
+  followers!: any;
+  followings!: any;
+  likes!: any;
+  comments!: any;
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -112,6 +116,38 @@ export class ProfileComponent implements OnInit {
       }
     } else {
       this.router.navigate(['/login']);
+    }
+  }
+
+  changeView(toShow: string) {
+    this.view = toShow;
+    switch (toShow) {
+      case "followers":
+        this.followers = this._profileService.getFollowers(this.profile.username).subscribe(value => {
+          this.followers = value;
+          console.log(this.followers);
+        });
+        break;
+      case "following":
+        this.followings = this._profileService.getFollowings(this.profile.username).subscribe(value => {
+          this.followings = value;
+          console.log(this.followings);
+        });
+        break;
+      case "likes":
+        this.likes = this._profileService.getLikes(this.profile.username).subscribe(value => {
+          this.likes = value;
+          console.log(this.likes);
+        });
+        break;
+      case "comments":
+        this.comments = this._profileService.getComments(this.profile.username).subscribe(value => {
+          this.comments = value;
+          console.log(this.comments);
+        });
+        break;
+      default:
+        break;
     }
   }
 
