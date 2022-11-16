@@ -18,6 +18,7 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   currentUser!: User;
+  url!: any;
 
   ngOnInit() {
     this._userService.currentUser.subscribe(
@@ -35,9 +36,12 @@ export class HeaderComponent implements OnInit {
 
   goProfile() {
     this.router.navigate(['/profile/' + this.currentUser.username]);
-    setTimeout(() => {
-      window.location.reload();
-    }, 5);
+    if (this.router.url.split("/")[1] == "profile") {
+      setTimeout(() => {
+        window.location.reload();
+      }, 50);
+    }
+
   }
 
 }

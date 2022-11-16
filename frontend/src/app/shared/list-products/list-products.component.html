@@ -38,4 +38,4 @@
     </div>
   </div>
 </div>
-<app-pagination [hidden]="!isProducts" (pageChange)="loadPage()" [config]="listConfig"></app-pagination>
+<app-pagination [hidden]="!isProducts" (pageChange)="loadPage($event)" [config]="listConfig"></app-pagination>

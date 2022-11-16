@@ -34,7 +34,6 @@ export class CommentsComponent implements OnInit {
   user!: string;
 
   ngOnInit() {
-    console.log(this.slug);
     if (this.slug) {
       this.loadComments();
     }
@@ -63,7 +62,6 @@ export class CommentsComponent implements OnInit {
     this._commentsService.delete(this.slug, commentId).subscribe(data => {
       this.loadComments();
     });
-
   }
 
 }

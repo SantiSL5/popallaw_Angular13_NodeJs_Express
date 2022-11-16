@@ -8,7 +8,6 @@ import { PaginationComponent } from '../pagination/pagination.component';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { PaginationConfig, UserService } from 'src/app/core';
-// import { FiltersComponent } from '../filters/filters.component';
 
 @Component({
   selector: 'app-list-products',
@@ -61,7 +60,9 @@ export class ListProductsComponent implements OnInit {
       this.minValue = this.products.minprice;
       if (mode=="filters") {
         this.listConfig= {
-          numItems:this.productCount
+          numItems:this.productCount,
+          limit:6,
+          page:"shop"
         }
       }
     }
@@ -73,7 +74,7 @@ export class ListProductsComponent implements OnInit {
     this.router.navigateByUrl('/shop/item/' + value);
   }
 
-  loadPage() {
+  loadPage(pageNumber:number) {
     setTimeout(()=>{
       this.getAllProducts("pagination");
     }, 80) ;

@@ -31,6 +31,77 @@
                 <button (click)="changeView('comments')"><span class="comments">{{profile.numComments}}</span> Comments</button>
             </div>
 
+            <div *ngIf="view=='followers'">
+                <div class="card follower-card" *ngFor="let follower of followers; index as i">
+                    <div class="follower-header">
+                        <section class="card-info follower-info">
+                            <img (click)="goProfile(follower.username)" [src]=" follower.image || 'https://static.productionready.io/images/smiley-cyrus.jpg'"
+                                alt="author image" class="follower-img" />
+                            <h1 (click)="goProfile(follower.username)">{{follower.username}}</h1>
+                            <button class="followButton button" *ngIf="currentUser != follower.username && (follower.isFollowed === false || follower.isFollowed.length > 5)" (click)="toggleFollow(follower.isFollowed, follower.username, i, 'followers')">Follow</button>
+                            <button class="followButton button-active" *ngIf="currentUser != follower.username && follower.isFollowed === true" (click)="toggleFollow(follower.isFollowed, follower.username, i, 'followers')">Unfollow</button>
+
+                        </section>
+                    </div>
+                </div>
+                <app-pagination [hidden]="!isFollowers" (pageChange)="loadPage($event)" [config]="listConfig"></app-pagination>
+            </div>
+            <div *ngIf="view=='following'">
+                <div class="card following-card" *ngFor="let following of followings; index as i">
+                    <div class="following-header">
+                        <section class="card-info following-info">
+                            <img (click)="goProfile(following.username)" [src]=" following.image || 'https://static.productionready.io/images/smiley-cyrus.jpg'"
+                                alt="author image" class="following-img" />
+                            <h1 (click)="goProfile(following.username)">{{following.username}}</h1>
+                            <button class="followButton button" *ngIf="currentUser != following.username && (following.salt === 'false' || following.salt.length > 5)" (click)="toggleFollow(following.salt, following.username, i, 'followings')">Follow</button>
+                            <button class="followButton button-active" *ngIf="currentUser != following.username && following.salt === 'true'" (click)="toggleFollow(following.salt, following.username, i, 'followings')">Unfollow</button>
+                        </section>
+                    </div>
+                </div>
+                <app-pagination [hidden]="!isFollowings" (pageChange)="loadPage($event)" [config]="listConfig"></app-pagination>
+            </div>
+            <div *ngIf="view=='likes'">
+                <div class="card" *ngFor="let like of likes; index as i">
+                    <div class="card-header div-likes">
+                        <a class="product" (click)="goShop(like.slug)">
+                            <img src="../../assets/img/{{like.photo}}" alt="" class="likes-img">
+                        </a>
+                        &nbsp;
+                        <div class="product-like">
+                            <h1 (click)="goShop(like.slug)">{{like.name}}</h1>
+                            <span class="favorite">
+                                <div class="heart" *ngIf="like.favorited === true"><img src="../../assets/heart-solid.svg" alt="" (click)="toggleFav(like.slug, 'unfav', i)"></div>
+                                <div class="heart" *ngIf="like.favorited === false"><img src="../../assets/heart-regular.svg" alt="" (click)="toggleFav(like.slug, 'fav', i)"></div>
+                                <p class="favoritedCount">{{like.favoritesCount}}</p>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <app-pagination [hidden]="!isLikes" (pageChange)="loadPage($event)" [config]="listConfig"></app-pagination>
+            </div>
+            <div *ngIf="view=='comments'">
+                <div class="card" *ngFor="let comment of comments; index as i">
+                    <div class="card-header">
+                    <a class="product" (click)="goShop(comment.slug)">
+                        <img src="../../assets/img/{{comment.photo}}" alt=""><h1>{{comment.name}}</h1>
+                    </a>
+                        &nbsp;
+                        <span class="date-posted">
+                            {{ comment.comments.createdAt | date: 'longDate' }}
+                        </span>
+                        <span class="mod-options" *ngIf="comment.author === user">
+                            <p class="red">Delete comment</p>
+                        </span>
+                    </div>
+                    <div class="card-block">
+                        <p class="card-text">
+                            {{ comment.comments.body }}
+                        </p>
+                    </div>
+                </div>
+                <app-pagination [hidden]="!isComments" (pageChange)="loadPage($event)" [config]="listConfig"></app-pagination>
+            </div>
+
             <div class="settings" *ngIf="view=='settings'">
                 <form [formGroup]="settingsForm" (ngSubmit)="submitForm()">
 
@@ -59,26 +130,6 @@
                     <button class="btn btn-lg btn-block btn-primary mb-2" type="submit"
                         [disabled]="!settingsForm.valid">Change values</button>
                 </form>
-            </div>
-            <div *ngIf="view=='followers'">
-                <div *ngFor="let follower of followers">
-                    <img src="{{follower.image}}" alt=""><h1>{{follower.username}}</h1>
-                </div>
-            </div>
-            <div *ngIf="view=='following'">
-                <div *ngFor="let following of followings">
-                    <img src="{{following.image}}" alt=""><h1>{{following.username}}</h1>
-                </div>
-            </div>
-            <div *ngIf="view=='likes'">
-                <div *ngFor="let like of likes">
-                    <img src="../../assets/img/{{like.photo}}" alt=""><h1>{{like.name}}</h1>
-                </div>
-            </div>
-            <div *ngIf="view=='comments'">
-                <div *ngFor="let comment of comments">
-                    <img src="../../assets/img/{{comment.photo}}" alt=""><h1>{{comment.name}}</h1>
-                </div>
             </div>
         </div>
     </div>

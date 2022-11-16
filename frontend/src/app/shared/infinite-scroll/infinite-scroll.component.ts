@@ -42,9 +42,11 @@ export class InfiniteScrollComponent implements OnInit {
     }
     this.filters.category=slug;
     this._productService.setFilters(this.filters,"category");
-    this.router.navigate(
-      ['/shop']
-    );
+    setTimeout(()=>{
+      this.router.navigate(
+        ['/shop']
+      );
+    }, 50);
   }
 
 }

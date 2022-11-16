@@ -11,7 +11,8 @@ import { PaginationConfig } from 'src/app/core';
 })
 
 export class PaginationComponent implements OnInit {
-
+  limit!: number;
+  page!: string;
   numpages: number = 0;
   pages: number[] = [];
   actualpage: number = 1;
@@ -22,10 +23,12 @@ export class PaginationComponent implements OnInit {
   onMostLeft: Boolean = true;
   onMostRight: Boolean = false;
 
-  @Output() pageChange = new EventEmitter<void>();
+  @Output() pageChange = new EventEmitter<number>();
   @Input()
   set config(config: PaginationConfig) {
     if (config) {
+      this.limit=config.limit;
+      this.page=config.page;
       this.setNumPages(config.numItems);
     }
   }
@@ -33,15 +36,17 @@ export class PaginationComponent implements OnInit {
     private _productService: ProductService,
   ) { }
   ngOnInit(): void {
-    this.filters=this._productService.getFilters();
-    if (this.filters.offset==0) {
-      this.setPageTo(1)
+    if (this.page=="shop") {
+      this.filters=this._productService.getFilters();
+      if (this.filters.offset==0) {
+        this.setPageTo(1)
+      }
     }
   }
 
   setNumPages(count: number): void {
     this.actualpage=1;
-    this.numpages = Math.ceil(count / 6);
+    this.numpages = Math.ceil(count / this.limit);
     this.pages=[];
     for (let i = 0; i < this.numpages; i++) {
       this.pages[i] = i + 1;
@@ -50,23 +55,31 @@ export class PaginationComponent implements OnInit {
   }
 
   async setPageTo(pageNumber: number) {
-    if (pageNumber != this.actualpage) {
-      this.filters=this._productService.getFilters();
-
-      this.actualpage = pageNumber;
-      this.filters.limit = 6;
-      this.filters.offset = this.filters.limit * (this.actualpage - 1);
-      this._productService.setFilters(this.filters);
-      this._productService.setFilters(this.filters,"pagination");
+    if (this.page=="shop") {
+      if (pageNumber != this.actualpage) {
+        this.filters=this._productService.getFilters();
   
-      this.checkMove();
-  
-      await setTimeout(()=>{
-        this.pageChange.emit();
-      }, 80) ;
-      
+        this.actualpage = pageNumber;
+        this.filters.limit = this.limit;
+        this.filters.offset = this.filters.limit * (this.actualpage - 1);
+        this._productService.setFilters(this.filters);
+        this._productService.setFilters(this.filters,"pagination");
+    
+        this.checkMove();
+    
+        await setTimeout(()=>{
+          this.pageChange.emit(this.actualpage);
+        }, 80) ;
+        
+      }
+    } else if (this.page=="profile") {
+        this.actualpage = pageNumber;
+        this.checkMove();
+        await setTimeout(()=>{
+          this.pageChange.emit(this.actualpage);
+        }, 80) ;
     }
-  }
+  } 
 
   checkMove() {
     this.onMostLeft = false;

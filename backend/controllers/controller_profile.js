@@ -63,34 +63,77 @@ exports.getProfile = async (req, res) => {
 exports.getFollowers = async (req, res) => {
     let offset;
     let limit;
-    req.query.offset == undefined || req.query.offset < 0 ? offset = 0 : offset = req.query.offset;
-    req.query.limit == undefined || req.query.offset <= 0 ? limit = 5 : offset = req.query.limit;
+    let resultFollowers= [];
+    req.query.offset == undefined || req.query.offset < 0 ? offset = 0 : offset = Number(req.query.offset);
+    req.query.limit == undefined || req.query.limit <= 0 ? limit = 5 : limit = Number(req.query.limit);
 
     let followers = await User.aggregate([
         { $project: { "following": 1, "username": 1, "image": 1 } },
         { $unwind: '$following' },
         { $match: { 'following': req.profile._id } }
-    ]).limit(limit).skip(offset);
+    ])
 
-    return res.json(followers);
+    let numItems= followers.length;
+
+    for (let i = 0; i < limit; i++) {
+        if (followers[i+offset] != undefined) {
+            resultFollowers.push(followers[i+offset]); 
+        }
+    }
+
+    if (req.payload) {
+        await User.findById(req.payload.id).then(function (user) {
+            for (let i = 0; i < resultFollowers.length; i++) {
+                resultFollowers[i].isFollowed = user.isFollowing(resultFollowers[i]._id);
+            }
+        });
+    }
+
+    return res.json({
+        "numItems": numItems,
+        "followers": resultFollowers
+    });
 }
 
 exports.getFollowings = async (req, res) => {
     let offset;
     let limit;
-    req.query.offset == undefined || req.query.offset < 0 ? offset = 0 : offset = req.query.offset;
-    req.query.limit == undefined || req.query.offset <= 0 ? limit = 5 : offset = req.query.limit;
+    let resultFollowings= [];
+    let numItems= 0;
+    req.query.offset == undefined || req.query.offset < 0 ? offset = 0 : offset = Number(req.query.offset);
+    req.query.limit == undefined || req.query.limit <= 0 ? limit = 5 : limit = Number(req.query.limit);
 
-    let followings = await User.findById(req.profile._id).populate("following").select("following").limit(limit).skip(offset);
-    followings=followings.following;
-    return res.json(followings);
+    let followings = await User.findById(req.profile._id).populate("following").select("following")
+    if (followings.following.length > 0) {
+        followings=followings.following;
+        numItems= followings.length;
+        for (let i = 0; i < limit; i++) {
+            if (followings[i+offset] != undefined) {
+                resultFollowings.push(followings[i+offset]); 
+            }
+        }
+    
+    }
+
+    if (req.payload) {
+        await User.findById(req.payload.id).then(function (user) {
+            for (let i = 0; i < resultFollowings.length; i++) {
+                resultFollowings[i].salt = user.isFollowing(resultFollowings[i]._id);
+            }
+        });
+    }
+    return res.json({
+        "numItems": numItems,
+        "followings": resultFollowings
+    });
 }
 
 exports.getComments = async (req, res) => {
     let offset;
     let limit;
-    req.query.offset == undefined || req.query.offset < 0 ? offset = 0 : offset = req.query.offset;
-    req.query.limit == undefined || req.query.offset <= 0 ? limit = 5 : offset = req.query.limit;
+    let resultComments= [];
+    req.query.offset == undefined || req.query.offset < 0 ? offset = 0 : offset = Number(req.query.offset);
+    req.query.limit == undefined || req.query.limit <= 0 ? limit = 5 : limit = Number(req.query.limit);
 
     let comments = await Product.aggregate([
         { $project: { "comments": 1, "photo": 1, "name": 1, "slug": 1 } },
@@ -115,29 +158,47 @@ exports.getComments = async (req, res) => {
         },
         { $match: { "comments.author": req.profile._id } }
 
-    ]).limit(limit).skip(offset);
+    ])
 
-    return res.json(comments);
+    let numItems= comments.length;
+    for (let i = 0; i < limit; i++) {
+        if (comments[i+offset] != undefined) {
+            resultComments.push(comments[i+offset]); 
+        }
+    }
+
+    return res.json({
+        "numItems": numItems,
+        "comments": resultComments
+    });
 }
 
 exports.getLikes = async (req, res) => {
     let offset;
     let limit;
-    req.query.offset == undefined || req.query.offset < 0 ? offset = 0 : offset = req.query.offset;
-    req.query.limit == undefined || req.query.offset <= 0 ? limit = 5 : offset = req.query.limit;
-    let likes = await User.findById(req.profile._id).populate("favorites").select("favorites").limit(limit).skip(offset);
+    let resultLikes= [];
+    req.query.offset == undefined || req.query.offset < 0 ? offset = 0 : offset = Number(req.query.offset);
+    req.query.limit == undefined || req.query.limit <= 0 ? limit = 5 : limit = Number(req.query.limit);
+    let likes = await User.findById(req.profile._id).populate("favorites").select("favorites");
+    let numItems= likes.favorites.length;
     likes = likes.favorites;
-    console.log(likes);
+    for (let i = 0; i < limit; i++) {
+        if (likes[i+offset] != undefined) {
+            resultLikes.push(likes[i+offset]); 
+        }
+    }
     if (req.payload) {
-        console.log(req.payload);
         await User.findById(req.payload.id).then(function (user) {
-            for (let i = 0; i < likes.length; i++) {
-                likes[i].favorited = user.isFavorite(likes[i]._id);
+            for (let i = 0; i < resultLikes.length; i++) {
+                resultLikes[i].favorited = user.isFavorite(resultLikes[i]._id);
             }
         });
     }
 
-    return res.json(likes);
+    return res.json({
+        "numItems": numItems,
+        "likes": resultLikes
+    });
 }
 
 exports.followProfile = async (req, res) => {

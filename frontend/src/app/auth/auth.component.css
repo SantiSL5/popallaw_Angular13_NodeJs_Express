@@ -2,3 +2,7 @@
     width: 40%;
     margin: 200px auto;
 }
+
+.form_change {
+    cursor: pointer;
+}

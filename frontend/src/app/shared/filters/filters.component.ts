@@ -50,8 +50,7 @@ export class FiltersComponent implements OnInit {
       if (this.filters.category!=undefined) {
         this.selectedValue=this.filters.category;
       }
-    }, 50);
-
+    }, 60);
   }
 
   getAllCategories(): void {

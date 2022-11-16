@@ -13,12 +13,11 @@
             <label for="password">Password:<br> <input type="password" name="password"
                     formControlName="password"></label><br>
             <div class="text-danger" *ngIf="loginForm.get('password')?.hasError('required') &&
-            loginForm.get('password')?.touched || loginForm.get('password')?.hasError('minlength') &&
             loginForm.get('password')?.touched">
-                <span>Password <strong>required</strong>, 5 characters min</span>
+                <span>Password <strong>required</strong></span>
             </div>
 
-            <p>Don't have an account? <b (click)="form = 'register'">Create one</b></p><br>
+            <p>Don't have an account? <b class="form_change" (click)="form = 'register'">Create one</b></p><br>
             <button class="btn btn-lg btn-block btn-primary mb-2" type="submit"
                 [disabled]="!loginForm.valid">Login</button>
         </form>
@@ -45,18 +44,20 @@
             <label for="password">Password:<br> <input type="password" name="password"
                     formControlName="password"></label><br>
             <div class="text-danger" *ngIf="registerForm.get('password')?.hasError('required') &&
-                    registerForm.get('password')?.touched || registerForm.get('password')?.hasError('minlength') &&
+                    registerForm.get('password')?.touched || registerForm.get('password')?.hasError('pattern') &&
                     registerForm.get('password')?.touched">
-                <span>Password <strong>required</strong>, 5 characters min</span>
+                <span>Password <strong>required</strong>, introduce a strong password (Min 8 Characters, Max 20 Characters. 1 Uppercase, 1 Lowercase , 1 Number and 1 Special Character)</span>
             </div>
 
             <label for="repeatPassword">Repeat password:<br> <input type="password" name="repeatPassword"
                     formControlName="repeatPassword"></label><br>
             <div class="text-danger" *ngIf="registerForm.get('repeatPassword')?.hasError('required') && registerForm.get('repeatPassword')?.touched
-                    || registerForm.get('repeatPassword')?.hasError('minlength') && registerForm.get('repeatPassword')?.touched
+                    || registerForm.get('repeatPassword')?.hasError('pattern') && registerForm.get('repeatPassword')?.touched
                     || confirmPassword_invalid && registerForm.get('repeatPassword')?.touched">
                 <span>Passwords <strong>must</strong> be equal.</span>
             </div>
+
+            <p>Do you have an account? <b class="form_change" (click)="form = 'login'">Log in</b></p><br>
 
             <button class="btn btn-lg btn-block btn-primary mb-2" type="submit"
                 [disabled]="!registerForm.valid">Register</button>
