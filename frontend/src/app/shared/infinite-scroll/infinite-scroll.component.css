@@ -18,7 +18,7 @@
 
 .card {
   margin-top: 20px;
-  width: 45%;
+  width: 90%;
 }
 
 .card img {
@@ -27,7 +27,7 @@
 }
 
 .card:hover .img {
-  webkit-filter: blur(7px);
+  -webkit-filter: blur(7px);
   -o-filter: blur(7px);
   -ms-filter: blur(7px);
   filter: blur(7px);
@@ -109,4 +109,18 @@
 
 .a-size .size {
   color: #252525;
+}
+
+@media screen and (min-width: 576px) {
+  .card {
+    margin-top: 20px;
+    width: 75%;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .card {
+    margin-top: 20px;
+    width: 45%;
+  }
 }

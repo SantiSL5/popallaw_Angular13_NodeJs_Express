@@ -2,11 +2,17 @@ nav {
     background: url(../../../assets/img/micro_carbon.png) repeat;
 }
 
+nav a {
+    margin: 0px;
+}
+
 .nav-item {
     margin: auto;
+    margin-right: 0px;
 }
 
 .userNav {
+    margin-top: 10px;
     display: flex;
     margin-left: 20px;
 }
@@ -30,6 +36,36 @@ img {
     width: 40px;
 }
 
-.userNav a:hover, img:hover {
+.userNav a:hover,
+img:hover {
     cursor: pointer;
+}
+
+.logOutButton,
+.username {
+    display: none;
+}
+
+@media screen and (min-width: 576px) {
+    nav a {
+        margin-left: 0px;
+        margin-right: 3px;
+    }
+
+    .nav-item {
+        margin-right: 3px;
+    }
+
+}
+
+@media screen and (min-width: 992px) {
+    nav a {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .logOutButton,
+    .username {
+        display: inline;
+    }
 }

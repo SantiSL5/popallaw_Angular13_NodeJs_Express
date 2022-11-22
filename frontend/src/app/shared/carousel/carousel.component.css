@@ -1,7 +1,23 @@
 mdb-carousel img {
     outline: none;
     max-width: 40%;
-    height: 80vh;
+    /* height: 40vh; */
+    min-height: 40vh;
     margin: auto;
+    width: 60%;
 }
 
+@media screen and (min-width: 576px) {
+    mdb-carousel img {
+        /* height: 50vh; */
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    mdb-carousel img {
+        min-height: 40vh;
+        height: 60vh;
+        width: 40%;
+    }
+}

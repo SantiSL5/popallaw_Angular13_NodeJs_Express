@@ -5,7 +5,7 @@ div {
 .wrapper {
     display: flex;
     height: 420px;
-    width: 654px;
+    width: 95%;
     margin: 50px auto;
     border-radius: 7px 7px 7px 7px;
     box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
@@ -168,5 +168,37 @@ button:hover {
 
 .favoritedCount {
     margin-top: 29px;
-    margin-left: -8px;
+    margin-left: 3px;
+}
+
+@media screen and (min-width: 576px) {
+    .wrapper {
+        display: flex;
+        height: 420px;
+        width: 654px;
+        margin: 50px auto;
+        border-radius: 7px 7px 7px 7px;
+        box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
+    }
+
+    .favoritedCount {
+        margin-top: 29px;
+        margin-left: -3px;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .wrapper {
+        display: flex;
+        height: 420px;
+        width: 654px;
+        margin: 50px auto;
+        border-radius: 7px 7px 7px 7px;
+        box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
+    }
+
+    .favoritedCount {
+        margin-top: 29px;
+        margin-left: -8px;
+    }
 }

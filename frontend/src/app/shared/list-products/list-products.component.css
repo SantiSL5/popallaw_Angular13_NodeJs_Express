@@ -57,7 +57,7 @@ html {
 .card {
   margin-top: 20px;
   height: 400px;
-  width: 30%;
+  width: 70%;
 }
 
 .card img {
@@ -67,7 +67,7 @@ html {
 }
 
 .card:hover .img {
-  webkit-filter: blur(7px);
+  -webkit-filter: blur(7px);
   -o-filter: blur(7px);
   -ms-filter: blur(7px);
   filter: blur(7px);
@@ -127,7 +127,7 @@ html {
 }
 
 .card:hover .img {
-  webkit-filter: blur(7px);
+  -webkit-filter: blur(7px);
   -o-filter: blur(7px);
   -ms-filter: blur(7px);
   filter: blur(7px);
@@ -339,4 +339,20 @@ html {
 
 .favoritedCount {
   margin-top: 13px;
+}
+
+@media screen and (min-width: 576px) {
+  .card {
+    margin-top: 20px;
+    height: 400px;
+    width: 45%;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .card {
+    margin-top: 20px;
+    height: 400px;
+    width: 30%;
+  }
 }
