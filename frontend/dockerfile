@@ -1,0 +1,12 @@
+# STAGE 1
+FROM node:16.17.0 AS install
+WORKDIR /home/node/app
+COPY package.json .
+RUN npm install
+
+# STAGE 2
+FROM node:16.17.0
+WORKDIR /home/node/app
+COPY --from=install /home/node/app/node_modules ./node_modules
+COPY . .
+EXPOSE 4200

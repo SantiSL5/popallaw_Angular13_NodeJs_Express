@@ -1,9 +1,10 @@
 version: "3.8"
 
 services:
-  popallawBackend:
-    container_name: popallawBackend
-    image: node:16.17.0
+  backend_container:
+    container_name: backend_container
+    build: ./backend
+    # image: node:16.17.0
     tty: true
     working_dir: /home/node/app
     ports:
@@ -13,11 +14,13 @@ services:
     networks:
       - popallawNetwork
     depends_on: 
-      - popallawMongodb
+      - mongo_container
     command: /bin/bash -c "usermod -u `stat -c '%u' .` node && groupmod -g `stat -c '%g' .` node && su node -c 'npm install && npm run dev'"
-  popallawFrontend:
-    container_name: popallawFrontend
-    image: node:16.17.0
+  
+  frontend_container:
+    container_name: frontend_container
+    build: ./frontend
+    # image: node:16.17.0
     tty: true
     working_dir: /home/node/app
     ports:
@@ -27,15 +30,36 @@ services:
     networks:
       - popallawNetwork
     command: /bin/bash -c "usermod -u `stat -c '%u' .` node && groupmod -g `stat -c '%g' .` node && su node -c 'npm install && npm start'"
-  popallawMongodb:
-    container_name: popallawMongodb
+  
+  mongo_container:
+    container_name: mongo_container
     image: mongo:6.0.1
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USER
-      - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
+      # - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USER
+      # - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
+      - MONGO_INITDB_DATABASE=popallaw
     volumes:
       - ./backend/data:/data/db
+      - ./mongo/import.sh:/docker-entrypoint-initdb.d/import.sh
+      - ./mongo/dump/popallaw:/dump
     networks:
       - popallawNetwork
+  
+  adminMongo_container:
+    image: mongo-express
+    container_name: adminMongo_container
+    ports:
+      - 8081:8081
+    environment:
+      # - ME_CONFIG_MONGODB_URL=mongodb://root:lliurex@popallawMongodb:27017/popallaw?authSource=admin
+      - ME_CONFIG_MONGODB_SERVER=mongo_container
+      # - ME_CONFIG_BASICAUTH_USERNAME=$MONGODB_USER
+      # - ME_CONFIG_BASICAUTH_PASSWORD=$MONGODB_PASSWORD
+    restart: always
+    networks:
+      - popallawNetwork
+    depends_on:
+      - mongo_container
+
 networks:
   popallawNetwork:
